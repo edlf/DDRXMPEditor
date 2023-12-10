@@ -1,4 +1,5 @@
 ﻿using DDR4XMPEditor.DDR4SPD;
+using DDR4XMPEditor.DDR5SPD;
 using DDR4XMPEditor.Events;
 using Stylet;
 using System.Collections.ObjectModel;
@@ -6,90 +7,113 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Shapes;
+using Xceed.Wpf.Toolkit;
 
 namespace DDR4XMPEditor.Pages
 {
-    public class EditorViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<SelectedSPDFileEvent>, 
+    public class DDR4EditorViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<SelectedSPDFileEvent>, 
         IHandle<SaveSPDFileEvent>
     {
-        public SPD SPD { get; set; }
+        public DDR4_SPD DDR4_SPD { get; set; }
+        public DDR5_SPD DDR5_SPD { get; set; }
         public string FilePath { get; set; }
         public string FileName { get; set; }
-        public bool IsSPDValid => SPD != null;
+        public bool IsDDR4SPDValid => DDR4_SPD != null;
+        public bool IsDDR5SPDValid => DDR5_SPD != null;
 
-        private readonly SPDEditorViewModel spdVm;
-        private readonly XMPEditorViewModel xmpVm1, xmpVm2;
-        private readonly MiscViewModel miscVm = new MiscViewModel { DisplayName = "Misc" };
+        private readonly DDR4SPDEditorViewModel ddr4spdVM;
+        private readonly XMP2EditorViewModel xmpVm1, xmpVm2;
+        private readonly DDR4MiscViewModel miscVm = new DDR4MiscViewModel { DisplayName = "Misc" };
 
-        public EditorViewModel(IEventAggregator aggregator)
+        public DDR4EditorViewModel(IEventAggregator aggregator)
         {
             aggregator.Subscribe(this);
-            Items.Add(spdVm = new SPDEditorViewModel { DisplayName = "SPD" });
-            Items.Add(xmpVm1 = new XMPEditorViewModel { DisplayName = "XMP 1" });
-            Items.Add(xmpVm2 = new XMPEditorViewModel { DisplayName = "XMP 2" });
+            Items.Add(ddr4spdVM = new DDR4SPDEditorViewModel { DisplayName = "SPD" });
+            Items.Add(xmpVm1 = new XMP2EditorViewModel { DisplayName = "XMP 1" });
+            Items.Add(xmpVm2 = new XMP2EditorViewModel { DisplayName = "XMP 2" });
             Items.Add(miscVm);
             ActiveItem = Items[0];
         }
 
         public void Handle(SelectedSPDFileEvent e)
         {
-            var spd = SPD.Parse(File.ReadAllBytes(e.FilePath));
-            if (spd == null)
-            {
-                MessageBox.Show("Invalid SPD file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            long length = new System.IO.FileInfo(e.FilePath).Length;
+
+            // Check file size before loading contents
+            if (length != 512) {
+                System.Windows.MessageBox.Show("Invalid SPD file, file size must be 512", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
+
+            byte[] spd_bytes = File.ReadAllBytes(e.FilePath);
+
+            // DDR4 SPD
+            if (length == DDR4_SPD.TotalSize)
             {
-                SPD = spd;
-
-                spdVm.Profile = SPD;
-                for (int i = 0; i < spdVm.CLSupported.Count; ++i)
+                var spd = DDR4_SPD.Parse(spd_bytes);
+                if (spd == null)
                 {
-                    spdVm.CLSupported[i] = SPD.IsCLSupported(spdVm.Profile.GetClSupported(), i);
+                    System.Windows.MessageBox.Show("Error parsing DDR4 SPD file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                BindNotifyPropertyChanged(spdVm);
-
-                xmpVm1.IsEnabled = SPD.XMP1Enabled;
-                SPD.Bind(x => x.XMP1Enabled, (s, args) => xmpVm1.IsEnabled = args.NewValue);
-                xmpVm1.Profile = SPD.XMP1;
-                for (int i = 0; i < xmpVm1.CLSupported.Count; ++i)
+                else
                 {
-                    xmpVm1.CLSupported[i] = SPD.IsCLSupported(xmpVm1.Profile.GetClSupported(), i);
-                }
+                    DDR4_SPD = spd;
 
-                xmpVm2.IsEnabled = SPD.XMP2Enabled;
-                SPD.Bind(x => x.XMP2Enabled, (s, args) => xmpVm2.IsEnabled = args.NewValue);
-                xmpVm2.Profile = SPD.XMP2;
-                for (int i = 0; i < xmpVm2.CLSupported.Count; ++i)
-                {
-                    xmpVm2.CLSupported[i] = SPD.IsCLSupported(xmpVm2.Profile.GetClSupported(), i);
-                }
-                
-                BindNotifyPropertyChanged(xmpVm1);
-                BindNotifyPropertyChanged(xmpVm2);
+                    ddr4spdVM.Profile = DDR4_SPD;
+                    for (int i = 0; i < ddr4spdVM.CLSupported.Count; ++i)
+                    {
+                        ddr4spdVM.CLSupported[i] = DDR4_SPD.IsCLSupported(ddr4spdVM.Profile.GetClSupported(), i);
+                    }
+                    BindNotifyPropertyChanged(ddr4spdVM);
 
-                FilePath = e.FilePath;
-                FileName = Path.GetFileName(FilePath);
+                    xmpVm1.IsEnabled = DDR4_SPD.XMP1Enabled;
+                    DDR4_SPD.Bind(x => x.XMP1Enabled, (s, args) => xmpVm1.IsEnabled = args.NewValue);
+                    xmpVm1.Profile = DDR4_SPD.XMP1;
+                    for (int i = 0; i < xmpVm1.CLSupported.Count; ++i)
+                    {
+                        xmpVm1.CLSupported[i] = DDR4_SPD.IsCLSupported(xmpVm1.Profile.GetClSupported(), i);
+                    }
 
-                miscVm.IsEnabled = true;
-                miscVm.SPD = spd;
-                if (spd.Density.HasValue)
-                {
-                    miscVm.SelectedDensity = spd.Density.Value;
+                    xmpVm2.IsEnabled = DDR4_SPD.XMP2Enabled;
+                    DDR4_SPD.Bind(x => x.XMP2Enabled, (s, args) => xmpVm2.IsEnabled = args.NewValue);
+                    xmpVm2.Profile = DDR4_SPD.XMP2;
+                    for (int i = 0; i < xmpVm2.CLSupported.Count; ++i)
+                    {
+                        xmpVm2.CLSupported[i] = DDR4_SPD.IsCLSupported(xmpVm2.Profile.GetClSupported(), i);
+                    }
+
+                    BindNotifyPropertyChanged(xmpVm1);
+                    BindNotifyPropertyChanged(xmpVm2);
+
+                    FilePath = e.FilePath;
+                    FileName = System.IO.Path.GetFileName(FilePath);
+
+                    miscVm.IsEnabled = true;
+                    miscVm.SPD = spd;
+                    if (spd.Density.HasValue)
+                    {
+                        miscVm.SelectedDensity = spd.Density.Value;
+                    }
+                    miscVm.SelectedBank = spd.Banks;
+                    miscVm.SelectedBankGroups = spd.BankGroups;
+                    miscVm.SelectedColumnAddress = spd.ColumnAddresses;
+                    miscVm.SelectedRowAddress = spd.RowAddresses;
                 }
-                miscVm.SelectedBank = spd.Banks;
-                miscVm.SelectedBankGroups = spd.BankGroups;
-                miscVm.SelectedColumnAddress = spd.ColumnAddresses;
-                miscVm.SelectedRowAddress = spd.RowAddresses;
             }
+            else if (length == DDR5_SPD.TotalSize) // DDR5 SPD
+            {
+                System.Windows.MessageBox.Show("DDR4 Mode used with DDR5 SPD", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }          
         }
 
         public void Handle(SaveSPDFileEvent e)
         {
-            SPD.UpdateCrc();
-            var bytes = SPD.GetBytes();
+            DDR4_SPD.UpdateCrc();
+            var bytes = DDR4_SPD.GetBytes();
             File.WriteAllBytes(e.FilePath, bytes);
-            MessageBox.Show(
+            System.Windows.MessageBox.Show(
                 $"Successfully SPD saved to {e.FilePath}",
                 "Success",
                 MessageBoxButton.OK,
@@ -97,11 +121,11 @@ namespace DDR4XMPEditor.Pages
             );
         }
 
-        private void BindNotifyPropertyChanged(XMPEditorViewModel vm)
+        private void BindNotifyPropertyChanged(XMP2EditorViewModel vm)
         {
             void UpdateFrequency()
             {
-                int? timeps = vm.Profile?.SDRAMCycleTicks * SPD.MTBps + vm.Profile?.SDRAMCycleTimeFC;
+                int? timeps = vm.Profile?.SDRAMCycleTicks * DDR4_SPD.MTBps + vm.Profile?.SDRAMCycleTimeFC;
                 vm.SDRAMCycleTime = timeps / 1000.0;
             }
             UpdateFrequency();
@@ -136,11 +160,11 @@ namespace DDR4XMPEditor.Pages
             vm.Profile.Bind(x => x.FAWTicks, (s, e) => vm.Refresh());
         }
 
-        private void BindNotifyPropertyChanged(SPDEditorViewModel vm)
+        private void BindNotifyPropertyChanged(DDR4SPDEditorViewModel vm)
         {
             void UpdateFrequency()
             {
-                int? timeps = vm.Profile?.MinCycleTime * SPD.MTBps + vm.Profile?.MinCycleTimeFC;
+                int? timeps = vm.Profile?.MinCycleTime * DDR4_SPD.MTBps + vm.Profile?.MinCycleTimeFC;
                 vm.SDRAMCycleTime = timeps / 1000.0;
             }
             UpdateFrequency();

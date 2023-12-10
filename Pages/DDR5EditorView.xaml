@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="DDR4XMPEditor.Pages.DDR5EditorView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" MinWidth="360" MinHeight="700">
+
+    <StackPanel IsEnabled="{Binding IsSPDValid}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                <Label Content="XMP 1 enabled:"/>
+                <CheckBox Margin="0,5,0,0" IsChecked="{Binding DDR5_SPD.XMP1Enabled}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                <Label Content="XMP 2 enabled:"/>
+                <CheckBox Margin="0,5,0,0" IsChecked="{Binding DDR5_SPD.XMP2Enabled}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                <Label Content="XMP 3 enabled:"/>
+                <CheckBox Margin="0,5,0,0" IsChecked="{Binding DDR5_SPD.XMP3Enabled}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <Label Content="XMP User profile 1:"/>
+                <CheckBox Margin="0,5,0,0" IsChecked="{Binding DDR5_SPD.XMPUser1Enabled}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+                <Label Content="XMP User Profile 2:"/>
+                <CheckBox Margin="0,5,0,0" IsChecked="{Binding DDR5_SPD.XMPUser2Enabled}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Label Content="SPD file:"/>
+                <TextBox VerticalAlignment="Center" IsReadOnly="True" Text="{Binding FileName}"/>
+            </StackPanel>
+        </Grid>
+
+        <TabControl Style="{StaticResource StyletConductorTabControl}"/>
+    </StackPanel>
+</UserControl>

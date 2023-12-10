@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace DDR4XMPEditor.DDR4SPD
 {
-    public class XMP : PropertyChangedBase
+    public class XMP_2_0 : PropertyChangedBase
     {
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         private unsafe struct RawXMP
@@ -231,8 +231,8 @@ namespace DDR4XMPEditor.DDR4SPD
         /// Parses a single XMP profile.
         /// </summary>
         /// <param name="bytes">The raw bytes of the XMP.</param>
-        /// <returns>An <see cref="XMP"/> object.</returns>
-        public static XMP Parse(byte[] bytes)
+        /// <returns>An <see cref="XMP_2_0"/> object.</returns>
+        public static XMP_2_0 Parse(byte[] bytes)
         {
             if (bytes.Length != Size)
             {
@@ -240,7 +240,7 @@ namespace DDR4XMPEditor.DDR4SPD
             }
 
             var handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-            XMP xmp = new XMP
+            XMP_2_0 xmp = new XMP_2_0
             {
                 rawXMP = Marshal.PtrToStructure<RawXMP>(handle.AddrOfPinnedObject())
             };

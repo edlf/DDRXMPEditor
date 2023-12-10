@@ -20,7 +20,7 @@ namespace DDR4XMPEditor.Pages
             OpenFileDialog ofd = new OpenFileDialog
             {
                 InitialDirectory = lastOpenDirectory,
-                Filter = "SPD files (*.spd)|*.spd|Binary files (*.bin)|*.bin|All files (*.*)|*.*",
+                Filter = "SPD files (*.spd, *.bin)|*.spd;*.bin|All files (*.*)|*.*",
                 RestoreDirectory = true
             };
 
@@ -29,8 +29,7 @@ namespace DDR4XMPEditor.Pages
                 lastOpenDirectory = ofd.FileName;
                 eventAggregator.Publish(new SelectedSPDFileEvent 
                 {
-                    FilePath = ofd.FileName,
-                    SPD = DDR4SPD.SPD.Parse(File.ReadAllBytes(ofd.FileName))
+                    FilePath = ofd.FileName
                 });
             }
         }

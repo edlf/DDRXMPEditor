@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace DDR4XMPEditor.DDR4SPD
 {
-    public class SPD : PropertyChangedBase
+    public class DDR4_SPD : PropertyChangedBase
     {
         public enum Densities
         {
@@ -116,7 +116,7 @@ namespace DDR4XMPEditor.DDR4SPD
 
         private RawSPD rawSPD;
         private XMPHeader xmpHeader;
-        private readonly XMP[] xmp = new XMP[2];
+        private readonly XMP_2_0[] xmp = new XMP_2_0[2];
 
         private static readonly Densities[] densityMap = new Densities[(int)Densities.Count]
         {
@@ -564,12 +564,12 @@ namespace DDR4XMPEditor.DDR4SPD
                 }
             }
         }
-        public XMP XMP1
+        public XMP_2_0 XMP1
         {
             get => xmp[0];
             set => xmp[0] = value;
         }
-        public XMP XMP2
+        public XMP_2_0 XMP2
         {
             get => xmp[1];
             set => xmp[1] = value;
@@ -644,7 +644,7 @@ namespace DDR4XMPEditor.DDR4SPD
             return bytes;
         }
 
-        public static SPD Parse(byte[] bytes)
+        public static DDR4_SPD Parse(byte[] bytes)
         {
             try
             {
@@ -660,7 +660,7 @@ namespace DDR4XMPEditor.DDR4SPD
                 if (headerMagic.SequenceEqual(HeaderMagic) || headerMagic.SequenceEqual(HeaderMagic0))
                 {
                     var rawSpdBytes = bytes.Take(SpdSize).ToArray();
-                    SPD spd = new SPD();
+                    DDR4_SPD spd = new DDR4_SPD();
 
                     // Read into RawSpd struct.
                     var handle = GCHandle.Alloc(rawSpdBytes, GCHandleType.Pinned);
@@ -752,8 +752,8 @@ namespace DDR4XMPEditor.DDR4SPD
 
         private void ParseXMP(byte[] bytes)
         {
-            XMP1 = XMP.Parse(bytes.Take(XMP.Size).ToArray());
-            XMP2 = XMP.Parse(bytes.Skip(XMP.Size).Take(XMP.Size).ToArray());
+            XMP1 = XMP_2_0.Parse(bytes.Take(XMP_2_0.Size).ToArray());
+            XMP2 = XMP_2_0.Parse(bytes.Skip(XMP_2_0.Size).Take(XMP_2_0.Size).ToArray());
         }
 
         private ushort Crc16(byte[] bytes)

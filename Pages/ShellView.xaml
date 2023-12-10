@@ -7,10 +7,11 @@
         xmlns:s="https://github.com/canton7/Stylet"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local:ShellViewModel}"
-        Title="DDR4 XMP Editor v1.1.0"
+        Title="DDR5 XMP Editor v1.0.0 BETA"
         SizeToContent="WidthAndHeight">
     <StackPanel>
         <ContentControl s:View.Model="{Binding MenuBar}"/>
-        <ContentControl s:View.Model="{Binding Editor}"/>
+        <!--ContentControl s:View.Model="{Binding DDR4Editor}"/-->
+        <ContentControl s:View.Model="{Binding DDR5Editor}"/>
     </StackPanel>
 </Window>

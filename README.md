@@ -1,13 +1,15 @@
-# DDR4 XMP Editor
-Editor for DDR4 SPD and XMP
+# DDR5 XMP Editor
+Editor for DDR5 with XMP 3.0. Only for regular, non buffered/non ECC DIMMS.
 
-![SPD](Images/ddr4xmpeditor1.png)
-![XMP 1](Images/ddr4xmpeditor2.png)
-![XMP 2](Images/ddr4xmpeditor3.png)
-![Misc](Images/ddr4xmpeditor4.png)
+Basic DDR5 support is complete, XMP 3.0 support is mostly complete. Tick rounding is not perfect.
 
-# Usage (on Ryzen)
-1. Dump the SPD using [spd_check](https://cdn.discordapp.com/attachments/727089095570096211/788561019517272124/spd_check_v02_test2.zip).
+This fork defaults to DDR5 mode, although DDR4 functionality is still present. Currently theres no DDR4/DDR5 switch, so you need to change which one you want on ShellViewModel.cs and rebuild.
+
+![SPD DDR5](Images/ddr5wip.png)
+![XMP 3.0 DDR5](Images/ddr5xmp3wip.png)
+
+# Usage
+1. Dump the SPD using [SPD-Reader-Writer](https://github.com/1a2m3/SPD-Reader-Writer).
 2. Open SPD dump and change settings to whatever you want.
 3. Save your modified SPD.
-4. Write the modified SPD using spd_write.
+4. Write the modified SPD using SPD-Reader-Writer if it reports a valid checksum (AT YOUR OWN RISK).

@@ -8,9 +8,9 @@ using System.Windows.Data;
 
 namespace DDR4XMPEditor.Pages
 {
-    public class XMPEditorViewModel : Screen
+    public class XMP2EditorViewModel : Screen
     {
-        public XMP Profile { get; set; }
+        public XMP_2_0 Profile { get; set; }
         public bool IsEnabled { get; set; }
 
         public double? SDRAMCycleTime { get; set; }
@@ -27,13 +27,13 @@ namespace DDR4XMPEditor.Pages
             }
         }
 
-        public XMPEditorViewModel()
+        public XMP2EditorViewModel()
         {
             CLSupported = new BindingList<bool>(Enumerable.Range(0, 31).Select(n => false).ToList());
             CLSupported.ListChanged += (s, e) =>
             {
                 var clSupported = Profile.GetClSupported();
-                SPD.SetCLSupported(clSupported, e.NewIndex, CLSupported[e.NewIndex]);
+                DDR4_SPD.SetCLSupported(clSupported, e.NewIndex, CLSupported[e.NewIndex]);
                 for (int i = 0; i < clSupported.Length; ++i)
                 {
                     Profile.SetClSupported(i, clSupported[i]);
@@ -46,7 +46,7 @@ namespace DDR4XMPEditor.Pages
 
         public int? tCL 
         {
-            get => TimeToTicks(Profile?.CLTicks * SPD.MTBps + Profile?.CLFC);
+            get => TimeToTicks(Profile?.CLTicks * DDR4_SPD.MTBps + Profile?.CLFC);
             set
             {
                 if (Profile == null)
@@ -61,10 +61,10 @@ namespace DDR4XMPEditor.Pages
                 }
             }
         }
-        public double? tCLTime => (Profile?.CLTicks * SPD.MTBps + Profile?.CLFC) / 1000.0;
+        public double? tCLTime => (Profile?.CLTicks * DDR4_SPD.MTBps + Profile?.CLFC) / 1000.0;
         public int? tRCD 
         {
-            get => TimeToTicks(Profile?.RCDTicks * SPD.MTBps + Profile?.RCDFC);
+            get => TimeToTicks(Profile?.RCDTicks * DDR4_SPD.MTBps + Profile?.RCDFC);
             set
             {
                 if (Profile == null)
@@ -79,10 +79,10 @@ namespace DDR4XMPEditor.Pages
                 }
             }
         }
-        public double? tRCDTime => (Profile?.RCDTicks * SPD.MTBps + Profile?.RCDFC) / 1000.0;
+        public double? tRCDTime => (Profile?.RCDTicks * DDR4_SPD.MTBps + Profile?.RCDFC) / 1000.0;
         public int? tRP 
         {
-            get => TimeToTicks(Profile?.RPTicks * SPD.MTBps + Profile?.RPFC);
+            get => TimeToTicks(Profile?.RPTicks * DDR4_SPD.MTBps + Profile?.RPFC);
             set
             {
                 if (Profile == null)
@@ -97,10 +97,10 @@ namespace DDR4XMPEditor.Pages
                 }
             }
         }
-        public double? tRPTime => (Profile?.RPTicks * SPD.MTBps + Profile?.RPFC) / 1000.0;
+        public double? tRPTime => (Profile?.RPTicks * DDR4_SPD.MTBps + Profile?.RPFC) / 1000.0;
         public int? tRAS 
         { 
-            get => TimeToTicks(Profile?.RASTicks * SPD.MTBps); 
+            get => TimeToTicks(Profile?.RASTicks * DDR4_SPD.MTBps); 
             set
             {
                 if (Profile == null)
@@ -117,7 +117,7 @@ namespace DDR4XMPEditor.Pages
         }
         public int? tRC 
         {
-            get => TimeToTicks(Profile?.RCTicks * SPD.MTBps + Profile?.RCFC); 
+            get => TimeToTicks(Profile?.RCTicks * DDR4_SPD.MTBps + Profile?.RCFC); 
             set
             {
                 if (Profile == null)
@@ -132,10 +132,10 @@ namespace DDR4XMPEditor.Pages
                 }
             }
         }
-        public double? tRCTime => (Profile?.RCTicks * SPD.MTBps + Profile?.RCFC) / 1000.0;
+        public double? tRCTime => (Profile?.RCTicks * DDR4_SPD.MTBps + Profile?.RCFC) / 1000.0;
         public int? tRFC 
         {
-            get => TimeToTicks(Profile?.RFC1Ticks * SPD.MTBps);
+            get => TimeToTicks(Profile?.RFC1Ticks * DDR4_SPD.MTBps);
             set
             {
                 if (Profile == null)
@@ -152,7 +152,7 @@ namespace DDR4XMPEditor.Pages
         }
         public int? tRFC2 
         { 
-            get => TimeToTicks(Profile?.RFC2Ticks * SPD.MTBps); 
+            get => TimeToTicks(Profile?.RFC2Ticks * DDR4_SPD.MTBps); 
             set
             {
                 if (Profile == null)
@@ -169,7 +169,7 @@ namespace DDR4XMPEditor.Pages
         }
         public int? tRFC4 
         {
-            get => TimeToTicks(Profile?.RFC4Ticks * SPD.MTBps);
+            get => TimeToTicks(Profile?.RFC4Ticks * DDR4_SPD.MTBps);
             set
             {
                 if (Profile == null)
@@ -186,7 +186,7 @@ namespace DDR4XMPEditor.Pages
         }
         public int? tRRDS 
         { 
-            get => TimeToTicks(Profile?.RRDSTicks * SPD.MTBps + Profile?.RRDSFC);
+            get => TimeToTicks(Profile?.RRDSTicks * DDR4_SPD.MTBps + Profile?.RRDSFC);
             set
             {
                 if (Profile == null)
@@ -201,10 +201,10 @@ namespace DDR4XMPEditor.Pages
                 }
             }
         }
-        public double? tRRDSTime => (Profile?.RRDSTicks * SPD.MTBps + Profile?.RRDSFC) / 1000.0;
+        public double? tRRDSTime => (Profile?.RRDSTicks * DDR4_SPD.MTBps + Profile?.RRDSFC) / 1000.0;
         public int? tRRDL 
         {
-            get => TimeToTicks(Profile?.RRDLTicks * SPD.MTBps + Profile?.RRDLFC);
+            get => TimeToTicks(Profile?.RRDLTicks * DDR4_SPD.MTBps + Profile?.RRDLFC);
             set
             {
                 if (Profile == null)
@@ -219,10 +219,10 @@ namespace DDR4XMPEditor.Pages
                 }
             }
         }
-        public double? tRRDLTime => (Profile?.RRDLTicks * SPD.MTBps + Profile?.RRDLFC) / 1000.0;
+        public double? tRRDLTime => (Profile?.RRDLTicks * DDR4_SPD.MTBps + Profile?.RRDLFC) / 1000.0;
         public int? tFAW 
         {
-            get => TimeToTicks(Profile?.FAWTicks * SPD.MTBps);
+            get => TimeToTicks(Profile?.FAWTicks * DDR4_SPD.MTBps);
             set
             {
                 if (Profile == null)
@@ -264,8 +264,8 @@ namespace DDR4XMPEditor.Pages
                 return null;
             }
 
-            int sdramCycleTime = Profile.SDRAMCycleTicks * SPD.MTBps + Profile.SDRAMCycleTimeFC;
-            return (int)Math.Floor(1.0 * dramTicks.Value * sdramCycleTime / SPD.MTBps);
+            int sdramCycleTime = Profile.SDRAMCycleTicks * DDR4_SPD.MTBps + Profile.SDRAMCycleTimeFC;
+            return (int)Math.Floor(1.0 * dramTicks.Value * sdramCycleTime / DDR4_SPD.MTBps);
         }
     }
 
@@ -276,12 +276,12 @@ namespace DDR4XMPEditor.Pages
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return System.Convert.ToInt32(value) * SPD.MTBps / 1000.0;
+            return System.Convert.ToInt32(value) * DDR4_SPD.MTBps / 1000.0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (int)Math.Round(((double)value * 1000.0 / SPD.MTBps));
+            return (int)Math.Round(((double)value * 1000.0 / DDR4_SPD.MTBps));
         }
     }
 }

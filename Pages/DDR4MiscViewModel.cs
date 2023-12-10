@@ -9,13 +9,13 @@ using System.Windows.Data;
 
 namespace DDR4XMPEditor.Pages
 {
-    public class MiscViewModel : Screen
+    public class DDR4MiscViewModel : Screen
     {
         public bool IsEnabled { get; set; }
 
-        public SPD SPD { get; set; }
+        public DDR4_SPD SPD { get; set; }
 
-        public ObservableCollection<Tuple<string, SPD.Densities>> DensityCollection { get; set; }
+        public ObservableCollection<Tuple<string, DDR4_SPD.Densities>> DensityCollection { get; set; }
         public ObservableCollection<int> BanksCollection { get; set; }
         public ObservableCollection<int> BankGroupsCollection { get; set; }
         public ObservableCollection<int> ColumnAddressesCollection { get; set; }
@@ -24,9 +24,9 @@ namespace DDR4XMPEditor.Pages
         public ObservableCollection<int> PackageRanksCollection { get; set; }
         public ObservableCollection<Tuple<string, bool>> RankMixCollection { get; set; }
 
-        public SPD.Densities SelectedDensity 
+        public DDR4_SPD.Densities SelectedDensity 
         { 
-            get => SPD != null && SPD.Density.HasValue ? SPD.Density.Value : SPD.Densities._256Mb;
+            get => SPD != null && SPD.Density.HasValue ? SPD.Density.Value : DDR4_SPD.Densities._256Mb;
             set => SPD.Density = value;
         }
         public int SelectedBank 
@@ -68,20 +68,20 @@ namespace DDR4XMPEditor.Pages
             set => SPD.RankMix = value;
         }
 
-        public MiscViewModel()
+        public DDR4MiscViewModel()
         {
-            DensityCollection = new ObservableCollection<Tuple<string, SPD.Densities>>
+            DensityCollection = new ObservableCollection<Tuple<string, DDR4_SPD.Densities>>
             {
-                Tuple.Create("256Mb", SPD.Densities._256Mb),
-                Tuple.Create("512Mb", SPD.Densities._512Mb),
-                Tuple.Create("1Gb", SPD.Densities._1Gb),
-                Tuple.Create("2Gb", SPD.Densities._2Gb),
-                Tuple.Create("4Gb", SPD.Densities._4Gb),
-                Tuple.Create("8Gb", SPD.Densities._8Gb),
-                Tuple.Create("16Gb", SPD.Densities._16Gb),
-                Tuple.Create("32Gb", SPD.Densities._32Gb),
-                Tuple.Create("12Gb", SPD.Densities._12Gb),
-                Tuple.Create("24Gb", SPD.Densities._24Gb)
+                Tuple.Create("256Mb", DDR4_SPD.Densities._256Mb),
+                Tuple.Create("512Mb", DDR4_SPD.Densities._512Mb),
+                Tuple.Create("1Gb", DDR4_SPD.Densities._1Gb),
+                Tuple.Create("2Gb", DDR4_SPD.Densities._2Gb),
+                Tuple.Create("4Gb", DDR4_SPD.Densities._4Gb),
+                Tuple.Create("8Gb", DDR4_SPD.Densities._8Gb),
+                Tuple.Create("16Gb", DDR4_SPD.Densities._16Gb),
+                Tuple.Create("32Gb", DDR4_SPD.Densities._32Gb),
+                Tuple.Create("12Gb", DDR4_SPD.Densities._12Gb),
+                Tuple.Create("24Gb", DDR4_SPD.Densities._24Gb)
             };
 
             BanksCollection = new ObservableCollection<int> { 4, 8 };

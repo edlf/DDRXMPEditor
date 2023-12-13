@@ -13,7 +13,7 @@ using Xceed.Wpf.Toolkit;
 
 namespace DDR4XMPEditor.Pages
 {
-    public class DDR4EditorViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<SelectedSPDFileEvent>, 
+    public class DDR4EditorViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<SelectedSPDFileEvent>,
         IHandle<SaveSPDFileEvent>
     {
         public DDR4_SPD DDR4_SPD { get; set; }
@@ -43,7 +43,7 @@ namespace DDR4XMPEditor.Pages
 
             // Check file size before loading contents
             if (length != 512) {
-                System.Windows.MessageBox.Show("Invalid SPD file, file size must be 512", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("Invalid SPD file, file size must be 512 bytes", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace DDR4XMPEditor.Pages
             else if (length == DDR5_SPD.TotalSize) // DDR5 SPD
             {
                 System.Windows.MessageBox.Show("DDR4 Mode used with DDR5 SPD", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }          
+            }
         }
 
         public void Handle(SaveSPDFileEvent e)

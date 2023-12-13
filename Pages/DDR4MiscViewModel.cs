@@ -24,30 +24,30 @@ namespace DDR4XMPEditor.Pages
         public ObservableCollection<int> PackageRanksCollection { get; set; }
         public ObservableCollection<Tuple<string, bool>> RankMixCollection { get; set; }
 
-        public DDR4_SPD.Densities SelectedDensity 
-        { 
+        public DDR4_SPD.Densities SelectedDensity
+        {
             get => SPD != null && SPD.Density.HasValue ? SPD.Density.Value : DDR4_SPD.Densities._256Mb;
             set => SPD.Density = value;
         }
-        public int SelectedBank 
-        { 
+        public int SelectedBank
+        {
             get => SPD != null ? SPD.Banks : BanksCollection.First();
-            set => SPD.Banks = value; 
+            set => SPD.Banks = value;
         }
-        public int SelectedBankGroups 
-        { 
-            get => SPD != null ? SPD.BankGroups : BankGroupsCollection.First(); 
-            set => SPD.BankGroups = value; 
+        public int SelectedBankGroups
+        {
+            get => SPD != null ? SPD.BankGroups : BankGroupsCollection.First();
+            set => SPD.BankGroups = value;
         }
-        public int SelectedColumnAddress 
-        { 
-            get => SPD != null ? SPD.ColumnAddresses : ColumnAddressesCollection.First(); 
-            set => SPD.ColumnAddresses = value; 
+        public int SelectedColumnAddress
+        {
+            get => SPD != null ? SPD.ColumnAddresses : ColumnAddressesCollection.First();
+            set => SPD.ColumnAddresses = value;
         }
         public int SelectedRowAddress
-        { 
-            get => SPD != null ? SPD.RowAddresses : RowAddressesCollection.First(); 
-            set => SPD.RowAddresses = value; 
+        {
+            get => SPD != null ? SPD.RowAddresses : RowAddressesCollection.First();
+            set => SPD.RowAddresses = value;
         }
 
         public int SelectedDeviceWidth

@@ -46,7 +46,7 @@ namespace DDR4XMPEditor.Pages
                 return "";
             }
             set {
-                if ((Profile != null && SPD != null) && !Profile.isUserProfile())
+                if ((Profile != null && SPD != null) && !Profile.IsUserProfile())
                 {
                     if (ProfileNumber == 1)
                     {
@@ -69,7 +69,7 @@ namespace DDR4XMPEditor.Pages
                     return false;
                 }
 
-                return !Profile.isUserProfile();
+                return !Profile.IsUserProfile();
             }
         }
 
@@ -112,7 +112,7 @@ namespace DDR4XMPEditor.Pages
             CLSupported.ListChanged += (s, e) =>
             {
                 var clSupported = Profile.GetClSupported();
-                DDR5_SPD.SetCLSupported(clSupported, e.NewIndex, CLSupported[e.NewIndex]);
+                Utilities.SetCLSupportedDDR5(clSupported, e.NewIndex, CLSupported[e.NewIndex]);
                 for (int i = 0; i < clSupported.Length; ++i)
                 {
                     Profile.SetClSupported(i, clSupported[i]);
@@ -130,35 +130,5 @@ namespace DDR4XMPEditor.Pages
         }
 
         public BindingList<bool> CLSupported { get; private set; }
-
-        /// <summary>
-        /// Convert <paramref name="timeps"/> to DRAM ticks.
-        /// </summary>
-        /// <param name="timeps">Time in picoseconds.</param>
-        /// <returns></returns>
-        private int? TimeToTicks(int? timeps)
-        {
-            if (!timeps.HasValue || timeps.Value <= 0)
-            {
-                return null;
-            }
-            return timeps.Value;
-        }
-
-        /// <summary>
-        /// Convert <paramref name="dramTicks"/> to MTB ticks.
-        /// </summary>
-        /// <param name="dramTicks">Ticks using DRAM cycle time units.</param>
-        /// <returns>Ticks using MTB units.</returns>
-        private int? DRAMTicksToMTBTicks(int? dramTicks)
-        {
-            if (!dramTicks.HasValue)
-            {
-                return null;
-            }
-
-            int sdramCycleTime = Profile.MinCycleTime;
-            return dramTicks.Value * sdramCycleTime;
-        }
     }
 }

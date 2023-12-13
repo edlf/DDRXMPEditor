@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="DDR4XMPEditor.Pages.XMP3EditorView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:DDR4XMPEditor.Pages"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d"
@@ -27,7 +27,7 @@
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ProfileName}" IsEnabled="{Binding IsNameEnabled}" MaxLength="15"/>
             </Grid>
         </GroupBox>
-        
+
         <GroupBox Header="Frequency and Voltage">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -61,7 +61,7 @@
                 <xctk:IntegerUpDown Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Minimum="110" Maximum="240" Value="{Binding Profile.VPP}"/>
                 <Label Grid.Row="4" Grid.Column="0" Content="VMEMCTRL:"/>
                 <xctk:IntegerUpDown Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Minimum="110" Maximum="240" Value="{Binding Profile.VMEMCTRL}"/>
-                
+
                 <CheckBox Grid.Row="5" Grid.Column="0" Content="Intel Dynamic Memory Boost" IsChecked="{Binding Profile.IntelDynamicMemoryBoost}"/>
 
                 <CheckBox Grid.Row="6" Grid.Column="0" Content="Realtime Memory Frequency OC" IsChecked="{Binding Profile.RealTimeMemoryFrequencyOC}"/>

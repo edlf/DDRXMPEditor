@@ -1,14 +1,8 @@
-﻿using DDR4XMPEditor.DDR4SPD;
-using Stylet;
+﻿using Stylet;
 using System;
-using System.Diagnostics.Metrics;
-using System.IO.Ports;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Navigation;
-using System.Xml;
-using static DDR4XMPEditor.DDR5SPD.XMP_3_0;
 
 namespace DDR4XMPEditor.DDR5SPD
 {
@@ -354,30 +348,19 @@ namespace DDR4XMPEditor.DDR5SPD
 
         private static readonly int[] columnAddressBitsMap = new int[2] { 10, 11 };
         private static readonly int[] rowAddressBitsMap = new int[3] { 16, 17, 18 };
-        
+
         private static readonly int[] deviceWidthMap = new int[4] { 4, 8, 16, 32 };
-
-        public unsafe ushort convertBytes(byte lsb, byte msb)
-        {
-            return (ushort)((msb << 8) + lsb);
-        }
-
-        public unsafe void convert16bitUnsignedInteger(ref byte lsb, ref byte msb, ushort value)
-        {
-            lsb = (byte)(value & 0xff);
-            msb = (byte)((value & 0xff00) >> 8);
-        }
 
         public unsafe ushort MinCycleTime
         {
             get
             {
-                return convertBytes(rawSPD.minCycleTime[0], rawSPD.minCycleTime[1]);
+                return Utilities.ConvertBytes(rawSPD.minCycleTime[0], rawSPD.minCycleTime[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.minCycleTime[0], ref rawSPD.minCycleTime[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.minCycleTime[0], ref rawSPD.minCycleTime[1], value);
             }
         }
 
@@ -385,12 +368,12 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.maxCycleTime[0], rawSPD.maxCycleTime[1]);
+                return Utilities.ConvertBytes(rawSPD.maxCycleTime[0], rawSPD.maxCycleTime[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.maxCycleTime[0], ref rawSPD.maxCycleTime[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.maxCycleTime[0], ref rawSPD.maxCycleTime[1], value);
             }
         }
 
@@ -408,23 +391,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tAA[0], rawSPD.tAA[1]);
+                return Utilities.ConvertBytes(rawSPD.tAA[0], rawSPD.tAA[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tAA[0], ref rawSPD.tAA[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tAA[0], ref rawSPD.tAA[1], value);
             }
         }
-        public unsafe ushort tAATicks
+        public unsafe uint tAATicks
         {
             get
             {
-                return (ushort)TimeToTicks(tAA);
-            }
-
-            set
-            {
+                return Utilities.TimeToTicksDDR5(tAA, MinCycleTime);
             }
         }
 
@@ -432,12 +411,12 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tRCD[0], rawSPD.tRCD[1]);
+                return Utilities.ConvertBytes(rawSPD.tRCD[0], rawSPD.tRCD[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRCD[0], ref rawSPD.tRCD[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRCD[0], ref rawSPD.tRCD[1], value);
             }
         }
 
@@ -445,11 +424,7 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return (ushort)TimeToTicks(tRCD);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tRCD, MinCycleTime);
             }
         }
 
@@ -457,12 +432,12 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tRP[0], rawSPD.tRP[1]);
+                return Utilities.ConvertBytes(rawSPD.tRP[0], rawSPD.tRP[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRP[0], ref rawSPD.tRP[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRP[0], ref rawSPD.tRP[1], value);
             }
         }
 
@@ -470,11 +445,7 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return (ushort)TimeToTicks(tRP);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tRP, MinCycleTime);
             }
         }
 
@@ -482,69 +453,57 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tRAS[0], rawSPD.tRAS[1]);
+                return Utilities.ConvertBytes(rawSPD.tRAS[0], rawSPD.tRAS[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRAS[0], ref rawSPD.tRAS[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRAS[0], ref rawSPD.tRAS[1], value);
             }
         }
         public unsafe ushort tRASTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tRAS);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tRAS, MinCycleTime);
             }
         }
         public unsafe ushort tRC
         {
             get
             {
-                return convertBytes(rawSPD.tRC[0], rawSPD.tRC[1]);
+                return Utilities.ConvertBytes(rawSPD.tRC[0], rawSPD.tRC[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRC[0], ref rawSPD.tRC[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRC[0], ref rawSPD.tRC[1], value);
             }
         }
         public unsafe ushort tRCTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tRC);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tRC, MinCycleTime);
             }
         }
         public unsafe ushort tWR
         {
             get
             {
-                return convertBytes(rawSPD.tWR[0], rawSPD.tWR[1]);
+                return Utilities.ConvertBytes(rawSPD.tWR[0], rawSPD.tWR[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tWR[0], ref rawSPD.tWR[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tWR[0], ref rawSPD.tWR[1], value);
             }
         }
         public unsafe ushort tWRTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tWR);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tWR, MinCycleTime);
             }
         }
 
@@ -552,19 +511,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tRFC1_slr[0], rawSPD.tRFC1_slr[1]);
+                return Utilities.ConvertBytes(rawSPD.tRFC1_slr[0], rawSPD.tRFC1_slr[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRFC1_slr[0], ref rawSPD.tRFC1_slr[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRFC1_slr[0], ref rawSPD.tRFC1_slr[1], value);
             }
         }
         public unsafe ushort tRFC1_slrTicks
         {
             get
             {
-                return (ushort)TimeToTicks((uint)(tRFC1_slr * 1000));
+                return (ushort)Utilities.TimeToTicksDDR5((uint)(tRFC1_slr * 1000), MinCycleTime);
             }
 
             set
@@ -575,138 +534,114 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tRFC2_slr[0], rawSPD.tRFC2_slr[1]);
+                return Utilities.ConvertBytes(rawSPD.tRFC2_slr[0], rawSPD.tRFC2_slr[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRFC2_slr[0], ref rawSPD.tRFC2_slr[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRFC2_slr[0], ref rawSPD.tRFC2_slr[1], value);
             }
         }
         public unsafe ushort tRFC2_slrTicks
         {
             get
             {
-                return (ushort)TimeToTicks((uint)(tRFC2_slr * 1000));
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5((uint)(tRFC2_slr * 1000), MinCycleTime);
             }
         }
         public unsafe ushort tRFCsb_slr
         {
             get
             {
-                return convertBytes(rawSPD.tRFCsb_slr[0], rawSPD.tRFCsb_slr[1]);
+                return Utilities.ConvertBytes(rawSPD.tRFCsb_slr[0], rawSPD.tRFCsb_slr[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRFCsb_slr[0], ref rawSPD.tRFCsb_slr[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRFCsb_slr[0], ref rawSPD.tRFCsb_slr[1], value);
             }
         }
         public unsafe ushort tRFCsb_slrTicks
         {
             get
             {
-                return (ushort)TimeToTicks((uint)(tRFCsb_slr * 1000));
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5((uint)(tRFCsb_slr * 1000), MinCycleTime);
             }
         }
         public unsafe ushort tRFC1_dlr
         {
             get
             {
-                return convertBytes(rawSPD.tRFC1_dlr[0], rawSPD.tRFC1_dlr[1]);
+                return Utilities.ConvertBytes(rawSPD.tRFC1_dlr[0], rawSPD.tRFC1_dlr[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRFC1_dlr[0], ref rawSPD.tRFC1_dlr[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRFC1_dlr[0], ref rawSPD.tRFC1_dlr[1], value);
             }
         }
         public unsafe ushort tRFC1_dlrTicks
         {
             get
             {
-                return (ushort)TimeToTicks((uint)(tRFC1_dlr * 1000));
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5((uint)(tRFC1_dlr * 1000), MinCycleTime);
             }
         }
         public unsafe ushort tRFC2_dlr
         {
             get
             {
-                return convertBytes(rawSPD.tRFC2_dlr[0], rawSPD.tRFC2_dlr[1]);
+                return Utilities.ConvertBytes(rawSPD.tRFC2_dlr[0], rawSPD.tRFC2_dlr[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRFC2_dlr[0], ref rawSPD.tRFC2_dlr[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRFC2_dlr[0], ref rawSPD.tRFC2_dlr[1], value);
             }
         }
         public unsafe ushort tRFC2_dlrTicks
         {
             get
             {
-                return (ushort)TimeToTicks((uint)(tRFC2_dlr * 1000));
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5((uint)(tRFC2_dlr * 1000), MinCycleTime);
             }
         }
         public unsafe ushort tRFCsb_dlr
         {
             get
             {
-                return convertBytes(rawSPD.tRFCsb_dlr[0], rawSPD.tRFCsb_dlr[1]);
+                return Utilities.ConvertBytes(rawSPD.tRFCsb_dlr[0], rawSPD.tRFCsb_dlr[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRFCsb_dlr[0], ref rawSPD.tRFCsb_dlr[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRFCsb_dlr[0], ref rawSPD.tRFCsb_dlr[1], value);
             }
         }
         public unsafe ushort tRFCsb_dlrTicks
         {
             get
             {
-                return (ushort)TimeToTicks((uint)(tRFCsb_dlr * 1000));
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5((uint)(tRFCsb_dlr * 1000), MinCycleTime);
             }
         }
         public unsafe ushort tRRD_L
         {
             get
             {
-                return convertBytes(rawSPD.tRRD_L[0], rawSPD.tRRD_L[1]);
+                return Utilities.ConvertBytes(rawSPD.tRRD_L[0], rawSPD.tRRD_L[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRRD_L[0], ref rawSPD.tRRD_L[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRRD_L[0], ref rawSPD.tRRD_L[1], value);
             }
         }
         public unsafe ushort tRRD_LTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tRRD_L);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tRRD_L, MinCycleTime);
             }
         }
         public unsafe ushort tRRD_L_lowerLimit
@@ -722,23 +657,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tCCD_L[0], rawSPD.tCCD_L[1]);
+                return Utilities.ConvertBytes(rawSPD.tCCD_L[0], rawSPD.tCCD_L[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tCCD_L[0], ref rawSPD.tCCD_L[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tCCD_L[0], ref rawSPD.tCCD_L[1], value);
             }
         }
         public unsafe ushort tCCD_LTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tCCD_L);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tCCD_L, MinCycleTime);
             }
         }
         public unsafe ushort tCCD_L_lowerLimit
@@ -753,23 +684,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tCCD_L_WR[0], rawSPD.tCCD_L_WR[1]);
+                return Utilities.ConvertBytes(rawSPD.tCCD_L_WR[0], rawSPD.tCCD_L_WR[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tCCD_L_WR[0], ref rawSPD.tCCD_L_WR[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tCCD_L_WR[0], ref rawSPD.tCCD_L_WR[1], value);
             }
         }
         public unsafe ushort tCCD_L_WRTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tCCD_L_WR);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tCCD_L_WR, MinCycleTime);
             }
         }
         public unsafe ushort tCCD_L_WR_lowerLimit
@@ -784,23 +711,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tCCD_L_WR2[0], rawSPD.tCCD_L_WR2[1]);
+                return Utilities.ConvertBytes(rawSPD.tCCD_L_WR2[0], rawSPD.tCCD_L_WR2[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tCCD_L_WR2[0], ref rawSPD.tCCD_L_WR2[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tCCD_L_WR2[0], ref rawSPD.tCCD_L_WR2[1], value);
             }
         }
         public unsafe ushort tCCD_L_WR2Ticks
         {
             get
             {
-                return (ushort)TimeToTicks(tCCD_L_WR2);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tCCD_L_WR2, MinCycleTime);
             }
         }
         public unsafe ushort tCCD_L_WR2_lowerLimit
@@ -816,23 +739,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tFAW[0], rawSPD.tFAW[1]);
+                return Utilities.ConvertBytes(rawSPD.tFAW[0], rawSPD.tFAW[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tFAW[0], ref rawSPD.tFAW[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tFAW[0], ref rawSPD.tFAW[1], value);
             }
         }
         public unsafe ushort tFAWTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tFAW);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tFAW, MinCycleTime);
             }
         }
         public unsafe ushort tFAW_lowerLimit
@@ -848,23 +767,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tCCD_L_WTR[0], rawSPD.tCCD_L_WTR[1]);
+                return Utilities.ConvertBytes(rawSPD.tCCD_L_WTR[0], rawSPD.tCCD_L_WTR[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tCCD_L_WTR[0], ref rawSPD.tCCD_L_WTR[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tCCD_L_WTR[0], ref rawSPD.tCCD_L_WTR[1], value);
             }
         }
         public unsafe ushort tCCD_L_WTRTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tCCD_L_WTR);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tCCD_L_WTR, MinCycleTime);
             }
         }
         public unsafe ushort tCCD_L_WTR_lowerLimit
@@ -879,23 +794,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tCCD_S_WTR[0], rawSPD.tCCD_S_WTR[1]);
+                return Utilities.ConvertBytes(rawSPD.tCCD_S_WTR[0], rawSPD.tCCD_S_WTR[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tCCD_S_WTR[0], ref rawSPD.tCCD_S_WTR[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tCCD_S_WTR[0], ref rawSPD.tCCD_S_WTR[1], value);
             }
         }
         public unsafe ushort tCCD_S_WTRTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tCCD_S_WTR);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tCCD_S_WTR, MinCycleTime);
             }
         }
         public unsafe ushort tCCD_S_WTR_lowerLimit
@@ -911,23 +822,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tRTP[0], rawSPD.tRTP[1]);
+                return Utilities.ConvertBytes(rawSPD.tRTP[0], rawSPD.tRTP[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tRTP[0], ref rawSPD.tRTP[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tRTP[0], ref rawSPD.tRTP[1], value);
             }
         }
         public unsafe ushort tRTPTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tRTP);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tRTP, MinCycleTime);
             }
         }
         public unsafe ushort tRTP_lowerLimit
@@ -942,23 +849,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tCCD_M[0], rawSPD.tCCD_M[1]);
+                return Utilities.ConvertBytes(rawSPD.tCCD_M[0], rawSPD.tCCD_M[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tCCD_M[0], ref rawSPD.tCCD_M[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tCCD_M[0], ref rawSPD.tCCD_M[1], value);
             }
         }
         public unsafe ushort tCCD_MTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tCCD_M);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tCCD_M, MinCycleTime);
             }
         }
         public unsafe ushort tCCD_M_lowerLimit
@@ -974,23 +877,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tCCD_M_WR[0], rawSPD.tCCD_M_WR[1]);
+                return Utilities.ConvertBytes(rawSPD.tCCD_M_WR[0], rawSPD.tCCD_M_WR[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tCCD_M_WR[0], ref rawSPD.tCCD_M_WR[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tCCD_M_WR[0], ref rawSPD.tCCD_M_WR[1], value);
             }
         }
         public unsafe ushort tCCD_M_WRTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tCCD_M_WR);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tCCD_M_WR, MinCycleTime);
             }
         }
         public unsafe ushort tCCD_M_WR_lowerLimit
@@ -1005,23 +904,19 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.tCCD_M_WTR[0], rawSPD.tCCD_M_WTR[1]);
+                return Utilities.ConvertBytes(rawSPD.tCCD_M_WTR[0], rawSPD.tCCD_M_WTR[1]);
             }
 
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.tCCD_M_WTR[0], ref rawSPD.tCCD_M_WTR[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.tCCD_M_WTR[0], ref rawSPD.tCCD_M_WTR[1], value);
             }
         }
         public unsafe ushort tCCD_M_WTRTicks
         {
             get
             {
-                return (ushort)TimeToTicks(tCCD_M_WTR);
-            }
-
-            set
-            {
+                return (ushort)Utilities.TimeToTicksDDR5(tCCD_M_WTR, MinCycleTime);
             }
         }
         public unsafe ushort tCCD_M_WTR_lowerLimit
@@ -1179,11 +1074,11 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(rawSPD.checksum[0], rawSPD.checksum[1]);
+                return Utilities.ConvertBytes(rawSPD.checksum[0], rawSPD.checksum[1]);
             }
             set
             {
-                convert16bitUnsignedInteger(ref rawSPD.checksum[0], ref rawSPD.checksum[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref rawSPD.checksum[0], ref rawSPD.checksum[1], value);
             }
         }
 
@@ -1191,11 +1086,11 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             get
             {
-                return convertBytes(xmpHeader.checksum[0], xmpHeader.checksum[1]);
+                return Utilities.ConvertBytes(xmpHeader.checksum[0], xmpHeader.checksum[1]);
             }
             set
             {
-                convert16bitUnsignedInteger(ref xmpHeader.checksum[0], ref xmpHeader.checksum[1], value);
+                Utilities.Convert16bitUnsignedInteger(ref xmpHeader.checksum[0], ref xmpHeader.checksum[1], value);
             }
         }
 
@@ -1385,14 +1280,14 @@ namespace DDR4XMPEditor.DDR5SPD
         public void UpdateXMPHeaderCRC() {
             // Update XMP Header CRC
             var rawXmpHeaderBytes = GetXMPHeaderBytes();
-            XMPHeaderCRC = Crc16(rawXmpHeaderBytes.Take(0x3D+1).ToArray());
+            XMPHeaderCRC = Utilities.Crc16(rawXmpHeaderBytes.Take(0x3D+1).ToArray());
         }
 
         public void UpdateCrc()
         {
             // Update JEDEC block checksum
             var rawSpdBytes = GetBytes();
-            CRC = Crc16(rawSpdBytes.Take(0x1FD + 1).ToArray());
+            CRC = Utilities.Crc16(rawSpdBytes.Take(0x1FD + 1).ToArray());
 
             if (xmpFound) {
                 UpdateXMPHeaderCRC();
@@ -1423,7 +1318,6 @@ namespace DDR4XMPEditor.DDR5SPD
 
         public byte[] GetBytes()
         {
-            int startIndex = 0;
             byte[] bytes = new byte[TotalSize];
 
             // Convert raw SPD to byte array.
@@ -1433,8 +1327,7 @@ namespace DDR4XMPEditor.DDR5SPD
                 int rawSpdSize = Marshal.SizeOf<RawSPD>();
                 ptr = Marshal.AllocHGlobal(rawSpdSize);
                 Marshal.StructureToPtr(rawSPD, ptr, true);
-                Marshal.Copy(ptr, bytes, startIndex, rawSpdSize);
-                startIndex += rawSpdSize;
+                Marshal.Copy(ptr, bytes, 0, rawSpdSize);
             }
             catch (Exception e)
             {
@@ -1472,13 +1365,9 @@ namespace DDR4XMPEditor.DDR5SPD
             byte[] xmp4Bytes = XMPUser1.GetBytes();
             byte[] xmp5Bytes = XMPUser2.GetBytes();
             Array.Copy(xmp1Bytes, 0, bytes, XMPProfilesOffset[0], xmp1Bytes.Length);
-            startIndex += xmp1Bytes.Length;
             Array.Copy(xmp2Bytes, 0, bytes, XMPProfilesOffset[1], xmp2Bytes.Length);
-            startIndex += xmp2Bytes.Length;
             Array.Copy(xmp3Bytes, 0, bytes, XMPProfilesOffset[2], xmp3Bytes.Length);
-            startIndex += xmp3Bytes.Length;
             Array.Copy(xmp4Bytes, 0, bytes, XMPProfilesOffset[3], xmp4Bytes.Length);
-            startIndex += xmp4Bytes.Length;
             Array.Copy(xmp5Bytes, 0, bytes, XMPProfilesOffset[4], xmp5Bytes.Length);
 
             return bytes;
@@ -1691,44 +1580,6 @@ namespace DDR4XMPEditor.DDR5SPD
             // User profiles
             XMPUser1 = XMP_3_0.Parse(4, bytes.Skip(XMP_3_0.Size*3).Take(XMP_3_0.Size).ToArray());
             XMPUser2 = XMP_3_0.Parse(5, bytes.Skip(XMP_3_0.Size*4).Take(XMP_3_0.Size).ToArray());
-        }
-
-        private uint TimeToTicks(uint time)
-        {
-            // 0.30% per the rounding algorithm per JESD400-5B
-            uint correctionFactor = 3;
-
-            // Apply correction factor, scaled by 1000
-            float temp = time * (1000 - correctionFactor);
-            // Initial nCK calculation, scaled by 1000
-            float tempNck = temp / MinCycleTime;
-            // Add 1, scaled by 1000, to effectively round up
-            tempNck = tempNck + 1000;
-            // Round down to next integer
-            return (uint)(tempNck / 1000); 
-        }
-
-        private ushort Crc16(byte[] bytes)
-        {
-            int crc = 0;
-
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                crc ^= bytes[i] << 8;
-                for (int j = 0; j < 8; j++)
-                {
-                    if ((crc & 0x8000) == 0x8000)
-                    {
-                        crc = (crc << 1) ^ 0x1021;
-                    }
-                    else
-                    {
-                        crc <<= 1;
-                    }
-                }
-            }
-
-            return (ushort)(crc & 0xFFFF);
         }
     }
 }

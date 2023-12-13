@@ -13,7 +13,7 @@ using Xceed.Wpf.Toolkit;
 
 namespace DDR4XMPEditor.Pages
 {
-    public class DDR5EditorViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<SelectedSPDFileEvent>, 
+    public class DDR5EditorViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<SelectedSPDFileEvent>,
         IHandle<SaveSPDFileEvent>
     {
         public DDR5_SPD DDR5_SPD { get; set; }
@@ -64,7 +64,7 @@ namespace DDR4XMPEditor.Pages
                     ddr5spdVM.Profile = DDR5_SPD;
                     for (int i = 0; i < ddr5spdVM.CLSupported.Count; ++i)
                     {
-                        ddr5spdVM.CLSupported[i] = DDR5_SPD.IsCLSupported(ddr5spdVM.Profile.GetClSupported(), i);
+                        ddr5spdVM.CLSupported[i] = Utilities.IsCLSupportedDDR5(ddr5spdVM.Profile.GetClSupported(), i);
                     }
                     BindNotifyPropertyChanged(ddr5spdVM);
 
@@ -74,7 +74,7 @@ namespace DDR4XMPEditor.Pages
                     xmpVm1.SPD = spd;
                     for (int i = 0; i < xmpVm1.CLSupported.Count; ++i)
                     {
-                         xmpVm1.CLSupported[i] = DDR5_SPD.IsCLSupported(xmpVm1.Profile.GetClSupported(), i);
+                         xmpVm1.CLSupported[i] = Utilities.IsCLSupportedDDR5(xmpVm1.Profile.GetClSupported(), i);
                     }
 
                     xmpVm2.IsEnabled = DDR5_SPD.XMP2Enabled;
@@ -83,7 +83,7 @@ namespace DDR4XMPEditor.Pages
                     xmpVm2.SPD = spd;
                     for (int i = 0; i < xmpVm2.CLSupported.Count; ++i)
                     {
-                        xmpVm2.CLSupported[i] = DDR5_SPD.IsCLSupported(xmpVm2.Profile.GetClSupported(), i);
+                        xmpVm2.CLSupported[i] = Utilities.IsCLSupportedDDR5(xmpVm2.Profile.GetClSupported(), i);
                     }
 
                     xmpVm3.IsEnabled = DDR5_SPD.XMP3Enabled;
@@ -92,7 +92,7 @@ namespace DDR4XMPEditor.Pages
                     xmpVm3.SPD = spd;
                     for (int i = 0; i < xmpVm3.CLSupported.Count; ++i)
                     {
-                        xmpVm3.CLSupported[i] = DDR5_SPD.IsCLSupported(xmpVm3.Profile.GetClSupported(), i);
+                        xmpVm3.CLSupported[i] = Utilities.IsCLSupportedDDR5(xmpVm3.Profile.GetClSupported(), i);
                     }
 
                     xmpVm4.IsEnabled = DDR5_SPD.XMPUser1Enabled;
@@ -101,7 +101,7 @@ namespace DDR4XMPEditor.Pages
                     xmpVm4.SPD = spd;
                     for (int i = 0; i < xmpVm4.CLSupported.Count; ++i)
                     {
-                        xmpVm4.CLSupported[i] = DDR5_SPD.IsCLSupported(xmpVm4.Profile.GetClSupported(), i);
+                        xmpVm4.CLSupported[i] = Utilities.IsCLSupportedDDR5(xmpVm4.Profile.GetClSupported(), i);
                     }
 
                     xmpVm5.IsEnabled = DDR5_SPD.XMPUser2Enabled;
@@ -110,7 +110,7 @@ namespace DDR4XMPEditor.Pages
                     xmpVm5.SPD = spd;
                     for (int i = 0; i < xmpVm5.CLSupported.Count; ++i)
                     {
-                        xmpVm5.CLSupported[i] = DDR5_SPD.IsCLSupported(xmpVm5.Profile.GetClSupported(), i);
+                        xmpVm5.CLSupported[i] = Utilities.IsCLSupportedDDR5(xmpVm5.Profile.GetClSupported(), i);
                     }
 
                     FilePath = e.FilePath;
@@ -157,67 +157,67 @@ namespace DDR4XMPEditor.Pages
 
             vm.Profile.Bind(x => x.tRAS, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRASTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRC, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRCTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tWR, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tWRTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRFC1_slr, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRFC1_slrTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRFC2_slr, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRFC2_slrTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRFCsb_slr, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRFCsb_slrTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRFC1_dlr, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRFC1_dlrTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRFC2_dlr, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRFC2_dlrTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRFCsb_dlr, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRFCsb_dlrTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRRD_L, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRRD_L_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRRD_LTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tCCD_L, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_L_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_LTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tCCD_L_WR, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_L_WR_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_L_WRTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tCCD_L_WR2, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_L_WR2_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_L_WR2Ticks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tFAW, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tFAW_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tFAWTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tCCD_L_WTR, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_L_WTR_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_L_WTRTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tCCD_S_WTR, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_S_WTR_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_S_WTRTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tRTP, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRTP_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tRTPTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tCCD_M, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_M_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_MTicks, (s, e) => vm.Refresh());
-            
+
             vm.Profile.Bind(x => x.tCCD_M_WR, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_M_WR_lowerLimit, (s, e) => vm.Refresh());
             vm.Profile.Bind(x => x.tCCD_M_WRTicks, (s, e) => vm.Refresh());

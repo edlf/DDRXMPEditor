@@ -66,6 +66,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DDR4SPD\DDR4_SPD.cs" />
@@ -152,10 +153,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody">
+    <PackageReference Include="Costura.Fody" PrivateAssets="All">
       <Version>5.7.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Extended.Wpf.Toolkit">
       <Version>4.4.0</Version>
@@ -169,7 +168,7 @@
     <PackageReference Include="NETStandard.Library">
       <Version>2.0.3</Version>
     </PackageReference>
-    <PackageReference Include="PropertyChanged.Fody">
+    <PackageReference Include="PropertyChanged.Fody" PrivateAssets="All">
       <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="Stylet.Start">

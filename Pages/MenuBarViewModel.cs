@@ -27,7 +27,7 @@ namespace DDR4XMPEditor.Pages
             if (ofd.ShowDialog().Value)
             {
                 lastOpenDirectory = ofd.FileName;
-                eventAggregator.Publish(new SelectedSPDFileEvent 
+                eventAggregator.Publish(new SelectedSPDFileEvent
                 {
                     FilePath = ofd.FileName
                 });

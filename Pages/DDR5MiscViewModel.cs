@@ -31,8 +31,8 @@ namespace DDR4XMPEditor.Pages
         }
 
         // Density
-        public DDR5_SPD.Densities SelectedDensity 
-        { 
+        public DDR5_SPD.Densities SelectedDensity
+        {
             get => SPD != null && SPD.Density.HasValue ? SPD.Density.Value : DDR5_SPD.Densities._0Gb;
             set => SPD.Density = value;
         }
@@ -46,7 +46,7 @@ namespace DDR4XMPEditor.Pages
             get => SPD != null ? SPD.BanksPerBankGroup : BanksPerBankGroupCollection.First();
             set => SPD.BanksPerBankGroup = (ushort)value;
         }
-        public int SelectedColumnAddress 
+        public int SelectedColumnAddress
         {
             get => SPD == null ? ColumnAddressesCollection.First() : SPD.ColumnAddresses;
             set => SPD.ColumnAddresses = (ushort)value;

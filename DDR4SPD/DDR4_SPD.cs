@@ -471,7 +471,7 @@ namespace DDR4XMPEditor.DDR4SPD
                 rawSPD.manufacturingYear = byte.Parse(value.ToString(), System.Globalization.NumberStyles.HexNumber);
             }
         }
-        
+
         public uint ManufacturingWeek
         {
             get => uint.Parse(rawSPD.manufacturingWeek.ToString("X"));   // Week is represented in hex e.g. 0x10 = Week 10
@@ -486,7 +486,7 @@ namespace DDR4XMPEditor.DDR4SPD
                 rawSPD.manufacturingWeek = byte.Parse(value.ToString(), System.Globalization.NumberStyles.HexNumber);
             }
         }
-        
+
         public unsafe string PartNumber
         {
             get
@@ -578,8 +578,8 @@ namespace DDR4XMPEditor.DDR4SPD
         public void UpdateCrc()
         {
             var rawSpdBytes = GetBytes();
-            CRC1 = Crc16(rawSpdBytes.Take(0x7D + 1).ToArray());
-            CRC2 = Crc16(rawSpdBytes.Skip(0x80).Take(0xFD - 0x80 + 1).ToArray());
+            CRC1 = Utilities.Crc16(rawSpdBytes.Take(0x7D + 1).ToArray());
+            CRC2 = Utilities.Crc16(rawSpdBytes.Skip(0x80).Take(0xFD - 0x80 + 1).ToArray());
         }
 
         public byte[] GetBytes()
@@ -754,29 +754,6 @@ namespace DDR4XMPEditor.DDR4SPD
         {
             XMP1 = XMP_2_0.Parse(bytes.Take(XMP_2_0.Size).ToArray());
             XMP2 = XMP_2_0.Parse(bytes.Skip(XMP_2_0.Size).Take(XMP_2_0.Size).ToArray());
-        }
-
-        private ushort Crc16(byte[] bytes)
-        {
-            int crc = 0;
-
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                crc ^= bytes[i] << 8;
-                for (int j = 0; j < 8; j++)
-                {
-                    if ((crc & 0x8000) == 0x8000)
-                    {
-                        crc = (crc << 1) ^ 0x1021;
-                    }
-                    else
-                    {
-                        crc <<= 1;
-                    }
-                }
-            }
-
-            return (ushort)(crc & 0xFFFF);
         }
     }
 }

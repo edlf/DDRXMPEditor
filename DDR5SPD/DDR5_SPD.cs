@@ -1571,6 +1571,64 @@ namespace DDR4XMPEditor.DDR5SPD
             get => xmp[4];
             set => xmp[4] = value;
         }
+
+        public bool copyXmpProfile(ushort sourceProfile, ushort targetProfile) {
+            if (sourceProfile == targetProfile)
+            {
+                return false;
+            }
+
+            XMP_3_0 source;
+
+            switch (sourceProfile) {
+                case 1:
+                    source = XMP1;
+                    break;
+                case 2:
+                    source = XMP2;
+                    break;
+                case 3:
+                    source = XMP3;
+                    break;
+                case 4:
+                    source = XMPUser1;
+                    break;
+                case 5:
+                    source = XMPUser2;
+                    break;
+                default:
+                    return false;
+            }
+
+            switch (targetProfile)
+            {
+                case 1:
+                    XMP1 = source;
+                    XMP1Enabled = true;
+                    break;
+
+                case 2:
+                    XMP2 = source;
+                    XMP2Enabled = true;
+                    break;
+                case 3:
+                    XMP3 = source;
+                    XMP3Enabled = true;
+                    break;
+                case 4:
+                    XMPUser1 = source;
+                    XMPUser1Enabled = true;
+                    break;
+                case 5:
+                    XMPUser2 = source;
+                    XMPUser2Enabled = true;
+                    break;
+                default:
+                    return false;
+            }
+
+            return true;
+        }
         private void ParseXMP(byte[] bytes)
         {
             XMP1 = XMP_3_0.Parse(1, bytes.Take(XMP_3_0.Size).ToArray());

@@ -66,8 +66,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" Content="Device Width:"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding DeviceWidthsCollection}"
-                          SelectedValue="{Binding SelectedDeviceWidth}"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding DeviceWidthsCollection}" SelectedValue="{Binding SelectedDeviceWidth}"/>
             </Grid>
         </GroupBox>
 
@@ -91,6 +90,29 @@
 
                 <Label Grid.Row="2" Grid.Column="0" Content="Part Number:"/>
                 <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SPD.PartNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="20"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Copy XMP Profiles">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Source:"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding XMPProfileNoCollection}" SelectedValue="{Binding sourceProfile}"/>
+                <Label Grid.Row="0" Grid.Column="2" Content="Target:"/>
+                <ComboBox Grid.Row="0" Grid.Column="3" ItemsSource="{Binding XMPProfileNoCollection}" SelectedValue="{Binding targetProfile}"/>
+                <Button Grid.Row="0" Grid.Column="5" Content="Copy" Command="{Binding Path=CopyCommand}"/>
             </Grid>
         </GroupBox>
     </StackPanel>

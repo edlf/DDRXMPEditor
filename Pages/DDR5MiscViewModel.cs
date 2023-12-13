@@ -1,18 +1,24 @@
 ﻿using DDR4XMPEditor.DDR5SPD;
 using Stylet;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace DDR4XMPEditor.Pages
 {
     public class DDR5MiscViewModel : Screen
     {
         public bool IsEnabled { get; set; }
+
+        public ushort sourceProfile { get; set; }
+        public ushort targetProfile { get; set; }
         public DDR5_SPD SPD { get; set; }
 
         public ObservableCollection<Tuple<string, DDR5_SPD.FormFactorEnum>> FormFactorCollection { get; set; }
@@ -23,6 +29,7 @@ namespace DDR4XMPEditor.Pages
         public ObservableCollection<int> ColumnAddressesCollection { get; set; }
         public ObservableCollection<int> RowAddressesCollection { get; set; }
         public ObservableCollection<int> DeviceWidthsCollection { get; set; }
+        public ObservableCollection<ushort> XMPProfileNoCollection { get; set; }
 
         public DDR5_SPD.FormFactorEnum SelectedFormFactor
         {
@@ -64,8 +71,77 @@ namespace DDR4XMPEditor.Pages
             set => SPD.DeviceWidth = (ushort)value;
         }
 
+        public void copyXMPProfile()
+        {
+            if (SPD.copyXmpProfile(sourceProfile, targetProfile))
+            {
+                MessageBox.Show("Data was sucessfully copied.", "XMP data copied", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong while copying the XMP data.", "Failed to copy XMP data", MessageBoxButton.OK, MessageBoxImage.Error);
+            };
+        }
+
+        private ICommand _copyCommand;
+
+        public class RelayCommand : ICommand
+        {
+            readonly Action<object> _execute;
+            readonly Predicate<object> _canExecute;
+
+            public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+            {
+                if (execute == null)
+                {
+                    throw new ArgumentNullException("execute");
+                }
+
+                _execute = execute;
+                _canExecute = canExecute;
+            }
+            public bool CanExecute(object parameters)
+            {
+                return _canExecute == null ? true : _canExecute(parameters);
+            }
+
+            public event EventHandler CanExecuteChanged
+            {
+                add { CommandManager.RequerySuggested += value; }
+                remove { CommandManager.RequerySuggested -= value; }
+            }
+
+            public void Execute(object parameters)
+            {
+                _execute(parameters);
+            }
+        }
+
+        public ICommand CopyCommand
+        {
+            get
+            {
+                if (_copyCommand == null)
+                {
+                    _copyCommand = new RelayCommand(
+                        param => this.copyXMPProfile(),
+                        param => this.CanCopy()
+                    );
+                }
+                return _copyCommand;
+            }
+        }
+
+        private bool CanCopy()
+        {
+            return sourceProfile != targetProfile;
+        }
+
         public DDR5MiscViewModel()
         {
+            sourceProfile = 1;
+            targetProfile = 2;
+
             FormFactorCollection = new ObservableCollection<Tuple<string, DDR5_SPD.FormFactorEnum>>
             {
                 Tuple.Create("Reserved", DDR5_SPD.FormFactorEnum.Reserved),
@@ -106,6 +182,7 @@ namespace DDR4XMPEditor.Pages
             RowAddressesCollection = new ObservableCollection<int> { 16, 17, 18 };
 
             DeviceWidthsCollection = new ObservableCollection<int> { 4, 8, 16, 32 };
+            XMPProfileNoCollection = new ObservableCollection<ushort> { 1, 2, 3, 4, 5 };
         }
     }
 }

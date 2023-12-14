@@ -120,7 +120,7 @@ namespace DDR4XMPEditor.Pages
             var bytes = DDR5_SPD.GetBytes();
             File.WriteAllBytes(e.FilePath, bytes);
             System.Windows.MessageBox.Show(
-                $"Successfully SPD saved to {e.FilePath}",
+                $"Successfully saved DDR5 SPD to {e.FilePath}",
                 "Success",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information

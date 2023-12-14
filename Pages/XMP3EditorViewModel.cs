@@ -114,7 +114,6 @@ namespace DDR4XMPEditor.Pages
                         SPD.XMPProfile3Name = value;
                     }
                 }
-                Refresh();
             }
         }
         public bool IsNameEnabled {

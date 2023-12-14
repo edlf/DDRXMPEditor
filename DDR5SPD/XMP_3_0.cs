@@ -1066,8 +1066,11 @@ namespace DDR4XMPEditor.DDR5SPD
 
         public void UpdateCrc()
         {
+            CRC = CalculateCRC();
+        }
+        public unsafe ushort CalculateCRC() {
             var rawXmpBytes = GetBytes();
-            CRC = Utilities.Crc16(rawXmpBytes.Take(0x3D + 1).ToArray());
+            return Utilities.Crc16(rawXmpBytes.Take(0x3D + 1).ToArray());
         }
 
         public byte[] GetBytes()
@@ -1092,6 +1095,24 @@ namespace DDR4XMPEditor.DDR5SPD
             }
 
             return bytes;
+        }
+        public bool CheckCRCValidity()
+        {
+            return CRC == CalculateCRC();
+        }
+
+        public bool IsEmpty()
+        {
+            var rawXmpBytes = GetBytes();
+
+            for (int i = 0; i < rawXmpBytes.Length; i++)
+            {
+                if (rawXmpBytes[i] != 0x00) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>

@@ -33,11 +33,11 @@
                 <Label Content="XMP 3"/>
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal">
-                <CheckBox Margin="3,5,0,0" IsChecked="{Binding DDR5_SPD.XMPUser1Enabled}"/>
+                <CheckBox Margin="3,5,0,0" IsChecked="{Binding DDR5_SPD.XMPUser1Enabled, Mode=OneWay}" IsEnabled="False"/>
                 <Label Content="XMP User profile 1"/>
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Horizontal">
-                <CheckBox Margin="3,5,0,0" IsChecked="{Binding DDR5_SPD.XMPUser2Enabled}"/>
+                <CheckBox Margin="3,5,0,0" IsChecked="{Binding DDR5_SPD.XMPUser2Enabled, Mode=OneWay}" IsEnabled="False"/>
                 <Label Content="XMP User Profile 2"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal">

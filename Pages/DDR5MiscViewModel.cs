@@ -1,10 +1,12 @@
 ﻿using DDR4XMPEditor.DDR5SPD;
+using Microsoft.Win32;
 using Stylet;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -85,12 +87,103 @@ namespace DDR4XMPEditor.Pages
         }
 
         public void exportXMPProfile() {
-            // SPD.XMP1.GetBytes();
+            SPD.UpdateCrc();
+
+            byte[] bytes;
+            string profileName;
+
+            switch (importExportProfile)
+            {
+                case 1:
+                    bytes = SPD.XMP1.GetBytes();
+                    profileName = SPD.XMPProfile1Name;
+                    break;
+                case 2:
+                    bytes = SPD.XMP2.GetBytes();
+                    profileName = SPD.XMPProfile2Name;
+                    break;
+                case 3:
+                    bytes = SPD.XMP3.GetBytes();
+                    profileName = SPD.XMPProfile3Name;
+                    break;
+                case 4:
+                    bytes = SPD.XMPUser1.GetBytes();
+                    profileName = "User 1";
+                    break;
+                case 5:
+                    bytes = SPD.XMPUser2.GetBytes();
+                    profileName = "User 2";
+                    break;
+                default:
+                    return;
+            }
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "XMP 3.0 file (*.bin)|*.bin";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.WriteAllBytes(saveFileDialog.FileName, bytes);
+                System.Windows.MessageBox.Show(
+                    $"Successfully saved XMP 3.0 Profile [{profileName}]  to {saveFileDialog.FileName}",
+                    "Success",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+            }
         }
 
         public void importXMPProfile()
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                long length = new FileInfo(openFileDialog.FileName).Length;
 
+                // Check file size before loading contents
+                if (length != 64)
+                {
+                    MessageBox.Show("Invalid XMP 3.0 file, file size must be 64 bytes", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                var bytes = File.ReadAllBytes(openFileDialog.FileName);
+
+                XMP_3_0 inputProfile = XMP_3_0.Parse(importExportProfile, bytes);
+
+                if (inputProfile.CheckCRCValidity())
+                {
+                    switch (importExportProfile)
+                    {
+                        case 1:
+                            SPD.XMP1 = inputProfile;
+                            SPD.XMPProfile1Name = "Imported";
+                            SPD.XMP1Enabled = true;
+                            break;
+                        case 2:
+                            SPD.XMP2 = inputProfile;
+                            SPD.XMPProfile2Name = "Imported";
+                            SPD.XMP2Enabled = true;
+                            break;
+                        case 3:
+                            SPD.XMP3 = inputProfile;
+                            SPD.XMPProfile3Name = "Imported";
+                            SPD.XMP3Enabled = true;
+                            break;
+                        case 4:
+                            SPD.XMPUser1 = inputProfile;
+                            break;
+                        case 5:
+                            SPD.XMPUser2 = inputProfile;
+                            break;
+                        default:
+                            return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Invalid XMP 3.0 Profile checksum", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         private ICommand _copyCommand;
@@ -181,11 +274,35 @@ namespace DDR4XMPEditor.Pages
 
         private bool CanImport()
         {
-            return (importExportProfile >= 1 && importExportProfile <= 5);
+            if (!(importExportProfile >= 1 && importExportProfile <= 5)){
+                return false;
+            }
+
+
+            return true;
         }
         private bool CanExport()
         {
-            return (importExportProfile >= 1 && importExportProfile <= 5);
+            if (!(importExportProfile >= 1 && importExportProfile <= 5))
+            {
+                return false;
+            }
+
+            switch (importExportProfile)
+            {
+                case 1:
+                    return SPD.XMP1.CheckCRCValidity() && !SPD.XMP1.IsEmpty();
+                case 2:
+                    return SPD.XMP2.CheckCRCValidity() && !SPD.XMP2.IsEmpty();
+                case 3:
+                    return SPD.XMP3.CheckCRCValidity() && !SPD.XMP3.IsEmpty();
+                case 4:
+                    return SPD.XMPUser1.CheckCRCValidity() && !SPD.XMPUser1.IsEmpty();
+                case 5:
+                    return SPD.XMPUser2.CheckCRCValidity() && !SPD.XMPUser1.IsEmpty();
+                default:
+                    return false;
+            }
         }
         public DDR5MiscViewModel()
         {

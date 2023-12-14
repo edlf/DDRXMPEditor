@@ -307,8 +307,6 @@ namespace DDR4XMPEditor.DDR5SPD
         private bool xmpFound = false;
         public const int TotalXMPProfiles = 5;
         private readonly XMP_3_0[] xmp = new XMP_3_0[TotalXMPProfiles];
-        private bool XMPUserProfile1Enabled = false;
-        private bool XMPUserProfile2Enabled = false;
 
         private static readonly FormFactorEnum[] formFactorMap = new FormFactorEnum[(int)FormFactorEnum.Count]
         {
@@ -1163,13 +1161,11 @@ namespace DDR4XMPEditor.DDR5SPD
         }
         public bool XMPUser1Enabled
         {
-            get { return XMPUserProfile1Enabled; }
-            set { XMPUserProfile1Enabled = value; }
+            get { return XMPUser1.CheckCRCValidity() && !XMPUser1.IsEmpty(); }
         }
         public bool XMPUser2Enabled
         {
-            get { return XMPUserProfile2Enabled; }
-            set { XMPUserProfile2Enabled = value; }
+            get { return XMPUser2.CheckCRCValidity() && !XMPUser2.IsEmpty(); }
         }
         public unsafe string XMPProfile1Name
         {
@@ -1612,25 +1608,28 @@ namespace DDR4XMPEditor.DDR5SPD
                     XMP1 = source;
                     XMP1Enabled = true;
                     XMPProfile1Name = profileName;
+                    UpdateCrc();
                     break;
 
                 case 2:
                     XMP2 = source;
                     XMP2Enabled = true;
                     XMPProfile2Name = profileName;
+                    UpdateCrc();
                     break;
                 case 3:
                     XMP3 = source;
                     XMP3Enabled = true;
                     XMPProfile3Name = profileName;
+                    UpdateCrc();
                     break;
                 case 4:
                     XMPUser1 = source;
-                    XMPUser1Enabled = true;
+                    XMPUser1.UpdateCrc();
                     break;
                 case 5:
                     XMPUser2 = source;
-                    XMPUser2Enabled = true;
+                    XMPUser2.UpdateCrc();
                     break;
                 default:
                     return false;

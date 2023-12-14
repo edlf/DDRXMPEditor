@@ -46,15 +46,15 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" Content="Min Cycle Time:"/>
-                <xctk:IntegerUpDown Grid.Row="0"  Grid.Column="1" Value="{Binding Profile.MinCycleTime}" Minimum="1" Maximum="65535" FormatString="N0"/>
+                <xctk:IntegerUpDown Grid.Row="0"  Grid.Column="1" Value="{Binding XMPProfile.MinCycleTime}" Minimum="1" Maximum="65535" FormatString="N0"/>
                 <TextBox Grid.Row="0" Grid.Column="2" IsReadOnly="True" Text="{Binding Frequency, StringFormat={}{0:F3}Mhz, Mode=OneWay}"/>
                 <TextBox Grid.Row="0" Grid.Column="3" IsReadOnly="True" Text="{Binding MegaTransfers, StringFormat={}{0:F3}MT/s, Mode=OneWay}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="Command Rate:"/>
                 <ComboBox Grid.Row="1" Grid.Column="1"  ItemsSource="{Binding CommandRatesCollection}" DisplayMemberPath="Item1" SelectedValuePath="Item2" SelectedValue="{Binding SelectedCommandRate}"/>
 
-                <CheckBox Grid.Row="2" Grid.Column="0" Content="Intel Dynamic Memory Boost" IsChecked="{Binding Profile.IntelDynamicMemoryBoost}"/>
-                <CheckBox Grid.Row="3" Grid.Column="0" Content="Realtime Memory Frequency OC" IsChecked="{Binding Profile.RealTimeMemoryFrequencyOC}"/>
+                <CheckBox Grid.Row="2" Grid.Column="0" Content="Intel Dynamic Memory Boost" IsChecked="{Binding XMPProfile.IntelDynamicMemoryBoost}"/>
+                <CheckBox Grid.Row="3" Grid.Column="0" Content="Realtime Memory Frequency OC" IsChecked="{Binding XMPProfile.RealTimeMemoryFrequencyOC}"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="Voltages">
@@ -75,13 +75,13 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" Content="VDD:"/>
-                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="1" Minimum="110" Maximum="240" Value="{Binding Profile.VDD}"/>
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="1" Minimum="110" Maximum="240" Value="{Binding XMPProfile.VDD}"/>
                 <Label Grid.Row="0" Grid.Column="2" Content="VDDQ:"/>
-                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="3" Minimum="110" Maximum="240" Value="{Binding Profile.VDDQ}"/>
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="3" Minimum="110" Maximum="240" Value="{Binding XMPProfile.VDDQ}"/>
                 <Label Grid.Row="0" Grid.Column="4" Content="VPP:"/>
-                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="5" Minimum="110" Maximum="240" Value="{Binding Profile.VPP}"/>
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="5" Minimum="110" Maximum="240" Value="{Binding XMPProfile.VPP}"/>
                 <Label Grid.Row="0" Grid.Column="6" Content="VMEMCTRL:"/>
-                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="7" Minimum="110" Maximum="240" Value="{Binding Profile.VMEMCTRL}"/>
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="7" Minimum="110" Maximum="240" Value="{Binding XMPProfile.VMEMCTRL}"/>
             </Grid>
         </GroupBox>
 
@@ -107,52 +107,52 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <CheckBox Grid.Row="0" Grid.Column="0" Content="20" IsChecked="{Binding CLSupported[20]}"/>
-                <CheckBox Grid.Row="1" Grid.Column="0" Content="22" IsChecked="{Binding CLSupported[22]}"/>
-                <CheckBox Grid.Row="2" Grid.Column="0" Content="24" IsChecked="{Binding CLSupported[24]}"/>
-                <CheckBox Grid.Row="3" Grid.Column="0" Content="26" IsChecked="{Binding CLSupported[26]}"/>
-                <CheckBox Grid.Row="4" Grid.Column="0" Content="28" IsChecked="{Binding CLSupported[28]}"/>
-                <CheckBox Grid.Row="5" Grid.Column="0" Content="30" IsChecked="{Binding CLSupported[30]}"/>
+                <CheckBox Grid.Row="0" Grid.Column="0" Content="20" IsChecked="{Binding XMPProfile.CL20}"/>
+                <CheckBox Grid.Row="1" Grid.Column="0" Content="22" IsChecked="{Binding XMPProfile.CL22}"/>
+                <CheckBox Grid.Row="2" Grid.Column="0" Content="24" IsChecked="{Binding XMPProfile.CL24}"/>
+                <CheckBox Grid.Row="3" Grid.Column="0" Content="26" IsChecked="{Binding XMPProfile.CL26}"/>
+                <CheckBox Grid.Row="4" Grid.Column="0" Content="28" IsChecked="{Binding XMPProfile.CL28}"/>
+                <CheckBox Grid.Row="5" Grid.Column="0" Content="30" IsChecked="{Binding XMPProfile.CL30}"/>
 
-                <CheckBox Grid.Row="0" Grid.Column="1" Content="32" IsChecked="{Binding CLSupported[32]}"/>
-                <CheckBox Grid.Row="1" Grid.Column="1" Content="34" IsChecked="{Binding CLSupported[34]}"/>
-                <CheckBox Grid.Row="2" Grid.Column="1" Content="36" IsChecked="{Binding CLSupported[36]}"/>
-                <CheckBox Grid.Row="3" Grid.Column="1" Content="38" IsChecked="{Binding CLSupported[38]}"/>
-                <CheckBox Grid.Row="4" Grid.Column="1" Content="40" IsChecked="{Binding CLSupported[40]}"/>
-                <CheckBox Grid.Row="5" Grid.Column="1" Content="42" IsChecked="{Binding CLSupported[42]}"/>
+                <CheckBox Grid.Row="0" Grid.Column="1" Content="32" IsChecked="{Binding XMPProfile.CL32}"/>
+                <CheckBox Grid.Row="1" Grid.Column="1" Content="34" IsChecked="{Binding XMPProfile.CL34}"/>
+                <CheckBox Grid.Row="2" Grid.Column="1" Content="36" IsChecked="{Binding XMPProfile.CL36}"/>
+                <CheckBox Grid.Row="3" Grid.Column="1" Content="38" IsChecked="{Binding XMPProfile.CL38}"/>
+                <CheckBox Grid.Row="4" Grid.Column="1" Content="40" IsChecked="{Binding XMPProfile.CL40}"/>
+                <CheckBox Grid.Row="5" Grid.Column="1" Content="42" IsChecked="{Binding XMPProfile.CL42}"/>
 
-                <CheckBox Grid.Row="0" Grid.Column="2" Content="44" IsChecked="{Binding CLSupported[44]}"/>
-                <CheckBox Grid.Row="1" Grid.Column="2" Content="46" IsChecked="{Binding CLSupported[46]}"/>
-                <CheckBox Grid.Row="2" Grid.Column="2" Content="48" IsChecked="{Binding CLSupported[48]}"/>
-                <CheckBox Grid.Row="3" Grid.Column="2" Content="50" IsChecked="{Binding CLSupported[50]}"/>
-                <CheckBox Grid.Row="4" Grid.Column="2" Content="52" IsChecked="{Binding CLSupported[52]}"/>
-                <CheckBox Grid.Row="5" Grid.Column="2" Content="54" IsChecked="{Binding CLSupported[54]}"/>
+                <CheckBox Grid.Row="0" Grid.Column="2" Content="44" IsChecked="{Binding XMPProfile.CL44}"/>
+                <CheckBox Grid.Row="1" Grid.Column="2" Content="46" IsChecked="{Binding XMPProfile.CL46}"/>
+                <CheckBox Grid.Row="2" Grid.Column="2" Content="48" IsChecked="{Binding XMPProfile.CL48}"/>
+                <CheckBox Grid.Row="3" Grid.Column="2" Content="50" IsChecked="{Binding XMPProfile.CL50}"/>
+                <CheckBox Grid.Row="4" Grid.Column="2" Content="52" IsChecked="{Binding XMPProfile.CL52}"/>
+                <CheckBox Grid.Row="5" Grid.Column="2" Content="54" IsChecked="{Binding XMPProfile.CL54}"/>
 
-                <CheckBox Grid.Row="0" Grid.Column="3" Content="56" IsChecked="{Binding CLSupported[56]}"/>
-                <CheckBox Grid.Row="1" Grid.Column="3" Content="58" IsChecked="{Binding CLSupported[58]}"/>
-                <CheckBox Grid.Row="2" Grid.Column="3" Content="60" IsChecked="{Binding CLSupported[60]}"/>
-                <CheckBox Grid.Row="3" Grid.Column="3" Content="62" IsChecked="{Binding CLSupported[62]}"/>
-                <CheckBox Grid.Row="4" Grid.Column="3" Content="64" IsChecked="{Binding CLSupported[64]}"/>
-                <CheckBox Grid.Row="5" Grid.Column="3" Content="66" IsChecked="{Binding CLSupported[66]}"/>
+                <CheckBox Grid.Row="0" Grid.Column="3" Content="56" IsChecked="{Binding XMPProfile.CL56}"/>
+                <CheckBox Grid.Row="1" Grid.Column="3" Content="58" IsChecked="{Binding XMPProfile.CL58}"/>
+                <CheckBox Grid.Row="2" Grid.Column="3" Content="60" IsChecked="{Binding XMPProfile.CL60}"/>
+                <CheckBox Grid.Row="3" Grid.Column="3" Content="62" IsChecked="{Binding XMPProfile.CL62}"/>
+                <CheckBox Grid.Row="4" Grid.Column="3" Content="64" IsChecked="{Binding XMPProfile.CL64}"/>
+                <CheckBox Grid.Row="5" Grid.Column="3" Content="66" IsChecked="{Binding XMPProfile.CL66}"/>
 
-                <CheckBox Grid.Row="0" Grid.Column="4" Content="68" IsChecked="{Binding CLSupported[68]}"/>
-                <CheckBox Grid.Row="1" Grid.Column="4" Content="70" IsChecked="{Binding CLSupported[70]}"/>
-                <CheckBox Grid.Row="2" Grid.Column="4" Content="72" IsChecked="{Binding CLSupported[72]}"/>
-                <CheckBox Grid.Row="3" Grid.Column="4" Content="74" IsChecked="{Binding CLSupported[74]}"/>
-                <CheckBox Grid.Row="4" Grid.Column="4" Content="76" IsChecked="{Binding CLSupported[76]}"/>
-                <CheckBox Grid.Row="5" Grid.Column="4" Content="78" IsChecked="{Binding CLSupported[78]}"/>
+                <CheckBox Grid.Row="0" Grid.Column="4" Content="68" IsChecked="{Binding XMPProfile.CL68}"/>
+                <CheckBox Grid.Row="1" Grid.Column="4" Content="70" IsChecked="{Binding XMPProfile.CL70}"/>
+                <CheckBox Grid.Row="2" Grid.Column="4" Content="72" IsChecked="{Binding XMPProfile.CL72}"/>
+                <CheckBox Grid.Row="3" Grid.Column="4" Content="74" IsChecked="{Binding XMPProfile.CL74}"/>
+                <CheckBox Grid.Row="4" Grid.Column="4" Content="76" IsChecked="{Binding XMPProfile.CL76}"/>
+                <CheckBox Grid.Row="5" Grid.Column="4" Content="78" IsChecked="{Binding XMPProfile.CL78}"/>
 
-                <CheckBox Grid.Row="0" Grid.Column="5" Content="80" IsChecked="{Binding CLSupported[80]}"/>
-                <CheckBox Grid.Row="1" Grid.Column="5" Content="82" IsChecked="{Binding CLSupported[82]}"/>
-                <CheckBox Grid.Row="2" Grid.Column="5" Content="84" IsChecked="{Binding CLSupported[84]}"/>
-                <CheckBox Grid.Row="3" Grid.Column="5" Content="86" IsChecked="{Binding CLSupported[86]}"/>
-                <CheckBox Grid.Row="4" Grid.Column="5" Content="88" IsChecked="{Binding CLSupported[88]}"/>
-                <CheckBox Grid.Row="5" Grid.Column="5" Content="90" IsChecked="{Binding CLSupported[90]}"/>
+                <CheckBox Grid.Row="0" Grid.Column="5" Content="80" IsChecked="{Binding XMPProfile.CL80}"/>
+                <CheckBox Grid.Row="1" Grid.Column="5" Content="82" IsChecked="{Binding XMPProfile.CL82}"/>
+                <CheckBox Grid.Row="2" Grid.Column="5" Content="84" IsChecked="{Binding XMPProfile.CL84}"/>
+                <CheckBox Grid.Row="3" Grid.Column="5" Content="86" IsChecked="{Binding XMPProfile.CL86}"/>
+                <CheckBox Grid.Row="4" Grid.Column="5" Content="88" IsChecked="{Binding XMPProfile.CL88}"/>
+                <CheckBox Grid.Row="5" Grid.Column="5" Content="90" IsChecked="{Binding XMPProfile.CL90}"/>
 
-                <CheckBox Grid.Row="0" Grid.Column="6" Content="92" IsChecked="{Binding CLSupported[92]}"/>
-                <CheckBox Grid.Row="1" Grid.Column="6" Content="94" IsChecked="{Binding CLSupported[94]}"/>
-                <CheckBox Grid.Row="2" Grid.Column="6" Content="96" IsChecked="{Binding CLSupported[96]}"/>
-                <CheckBox Grid.Row="3" Grid.Column="6" Content="98" IsChecked="{Binding CLSupported[98]}"/>
+                <CheckBox Grid.Row="0" Grid.Column="6" Content="92" IsChecked="{Binding XMPProfile.CL92}"/>
+                <CheckBox Grid.Row="1" Grid.Column="6" Content="94" IsChecked="{Binding XMPProfile.CL94}"/>
+                <CheckBox Grid.Row="2" Grid.Column="6" Content="96" IsChecked="{Binding XMPProfile.CL96}"/>
+                <CheckBox Grid.Row="3" Grid.Column="6" Content="98" IsChecked="{Binding XMPProfile.CL98}"/>
             </Grid>
         </GroupBox>
 
@@ -192,80 +192,80 @@
                 <Label Grid.Row="0" Grid.Column="7" Content="Ticks" FontWeight="Bold"/>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="tAA:" ToolTip="Read Command to First Data" FontStyle="Normal"/>
-                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Profile.tAA}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="1" Grid.Column="2" Content="{Binding Profile.tAATicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding XMPProfile.tAA}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="1" Grid.Column="2" Content="{Binding XMPProfile.tAATicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" Content="tRCD:" ToolTip="Activate to Read or Write Command Delay"/>
-                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding Profile.tRCD}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="2" Grid.Column="2" Content="{Binding Profile.tRCDTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding XMPProfile.tRCD}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="2" Grid.Column="2" Content="{Binding XMPProfile.tRCDTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="3" Grid.Column="0" Content="tRP:" ToolTip="Row Precharge Time"/>
-                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding Profile.tRP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="3" Grid.Column="2" Content="{Binding Profile.tRPTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding XMPProfile.tRP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="3" Grid.Column="2" Content="{Binding XMPProfile.tRPTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="4" Grid.Column="0" Content="tRAS:" ToolTip="Activate to Precharge Command Period"/>
-                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="1" Value="{Binding Profile.tRAS}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="4" Grid.Column="2" Content="{Binding Profile.tRASTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="1" Value="{Binding XMPProfile.tRAS}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="4" Grid.Column="2" Content="{Binding XMPProfile.tRASTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="5" Grid.Column="0" Content="tRC:" ToolTip="Activate to Activate or Refresh Command Period"/>
-                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="1" Value="{Binding Profile.tRC}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="5" Grid.Column="2" Content="{Binding Profile.tRCTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="1" Value="{Binding XMPProfile.tRC}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="5" Grid.Column="2" Content="{Binding XMPProfile.tRCTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="6" Grid.Column="0" Content="tWR:" ToolTip="Write Recovery Time"/>
-                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="1" Value="{Binding Profile.tWR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="6" Grid.Column="2" Content="{Binding Profile.tWRTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="1" Value="{Binding XMPProfile.tWR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="6" Grid.Column="2" Content="{Binding XMPProfile.tWRTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="7" Grid.Column="0" Content="tRFC1:" ToolTip="Normal Refresh Recovery Time"/>
-                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="1" Value="{Binding Profile.tRFC1}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="7" Grid.Column="2" Content="{Binding Profile.tRFC1Ticks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="1" Value="{Binding XMPProfile.tRFC1}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="7" Grid.Column="2" Content="{Binding XMPProfile.tRFC1Ticks, Mode=OneWay}"/>
 
                 <Label Grid.Row="8" Grid.Column="0" Content="tRFC2:" ToolTip="Fine Granularity Refresh Recovery Time"/>
-                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="1" Value="{Binding Profile.tRFC2}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="8" Grid.Column="2" Content="{Binding Profile.tRFC2Ticks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="1" Value="{Binding XMPProfile.tRFC2}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="8" Grid.Column="2" Content="{Binding XMPProfile.tRFC2Ticks, Mode=OneWay}"/>
 
                 <Label Grid.Row="9" Grid.Column="0" Content="tRFC:" ToolTip="Same Bank Refresh Recovery Time"/>
-                <xctk:IntegerUpDown Grid.Row="9" Grid.Column="1" Value="{Binding Profile.tRFC}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="9" Grid.Column="2" Content="{Binding Profile.tRFCTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="9" Grid.Column="1" Value="{Binding XMPProfile.tRFC}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="9" Grid.Column="2" Content="{Binding XMPProfile.tRFCTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="1" Grid.Column="4" Content="tRRD__L:" ToolTip="Activate to Activate Command Delay for Same Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="5" Value="{Binding Profile.tRRD_L}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="6" Value="{Binding Profile.tRRD_L_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="1" Grid.Column="7" Content="{Binding Profile.tRRD_LTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="5" Value="{Binding XMPProfile.tRRD_L}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="6" Value="{Binding XMPProfile.tRRD_L_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="1" Grid.Column="7" Content="{Binding XMPProfile.tRRD_LTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="2" Grid.Column="4" Content="tCCD__L:" ToolTip="Read to Read Command Delay for Same Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="5" Value="{Binding Profile.tCCD_L}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="6" Value="{Binding Profile.tCCD_L_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="2" Grid.Column="7" Content="{Binding Profile.tCCD_LTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="5" Value="{Binding XMPProfile.tCCD_L}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="6" Value="{Binding XMPProfile.tCCD_L_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="2" Grid.Column="7" Content="{Binding XMPProfile.tCCD_LTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="3" Grid.Column="4" Content="tCCD__L__WR:" ToolTip="Write to Write Command Delay for Same Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="5" Value="{Binding Profile.tCCD_L_WR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="6" Value="{Binding Profile.tCCD_L_WR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="3" Grid.Column="7" Content="{Binding Profile.tCCD_L_WRTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="5" Value="{Binding XMPProfile.tCCD_L_WR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="6" Value="{Binding XMPProfile.tCCD_L_WR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="3" Grid.Column="7" Content="{Binding XMPProfile.tCCD_L_WRTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="4" Grid.Column="4" Content="tCCD__L__WR2:" ToolTip="Write to Write Command Delay for Same Bank Group, Second Write not RMW"/>
-                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="5" Value="{Binding Profile.tCCD_L_WR2}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="6" Value="{Binding Profile.tCCD_L_WR2_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="4" Grid.Column="7" Content="{Binding Profile.tCCD_L_WR2Ticks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="5" Value="{Binding XMPProfile.tCCD_L_WR2}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="6" Value="{Binding XMPProfile.tCCD_L_WR2_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="4" Grid.Column="7" Content="{Binding XMPProfile.tCCD_L_WR2Ticks, Mode=OneWay}"/>
 
                 <Label Grid.Row="5" Grid.Column="4" Content="tFAW:" ToolTip="Four Activate Window"/>
-                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="5" Value="{Binding Profile.tFAW}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="6" Value="{Binding Profile.tFAW_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="5" Grid.Column="7" Content="{Binding Profile.tFAWTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="5" Value="{Binding XMPProfile.tFAW}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="6" Value="{Binding XMPProfile.tFAW_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="5" Grid.Column="7" Content="{Binding XMPProfile.tFAWTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="6" Grid.Column="4" Content="tCCD__L__WTR:" ToolTip="Write to Read Command Delay for Same Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="5" Value="{Binding Profile.tCCD_L_WTR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="6" Value="{Binding Profile.tCCD_L_WTR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="6" Grid.Column="7" Content="{Binding Profile.tCCD_L_WTRTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="5" Value="{Binding XMPProfile.tCCD_L_WTR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="6" Value="{Binding XMPProfile.tCCD_L_WTR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="6" Grid.Column="7" Content="{Binding XMPProfile.tCCD_L_WTRTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="7" Grid.Column="4" Content="tCCD__S__WTR:" ToolTip="Write to Read Command Delay for Different Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="5" Value="{Binding Profile.tCCD_S_WTR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="6" Value="{Binding Profile.tCCD_S_WTR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="7" Grid.Column="7" Content="{Binding Profile.tCCD_S_WTRTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="5" Value="{Binding XMPProfile.tCCD_S_WTR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="6" Value="{Binding XMPProfile.tCCD_S_WTR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="7" Grid.Column="7" Content="{Binding XMPProfile.tCCD_S_WTRTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="8" Grid.Column="4" Content="tRTP:" ToolTip="Read to Precharge Command Delay"/>
-                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="5" Value="{Binding Profile.tRTP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="6" Value="{Binding Profile.tRTP_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="8" Grid.Column="7" Content="{Binding Profile.tRTPTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="5" Value="{Binding XMPProfile.tRTP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="6" Value="{Binding XMPProfile.tRTP_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="8" Grid.Column="7" Content="{Binding XMPProfile.tRTPTicks, Mode=OneWay}"/>
             </Grid>
         </GroupBox>
     </StackPanel>

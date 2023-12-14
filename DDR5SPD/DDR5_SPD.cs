@@ -1579,22 +1579,28 @@ namespace DDR4XMPEditor.DDR5SPD
             }
 
             XMP_3_0 source;
+            string profileName;
 
             switch (sourceProfile) {
                 case 1:
                     source = XMP1;
+                    profileName = XMPProfile1Name;
                     break;
                 case 2:
                     source = XMP2;
+                    profileName = XMPProfile2Name;
                     break;
                 case 3:
                     source = XMP3;
+                    profileName = XMPProfile3Name;
                     break;
                 case 4:
                     source = XMPUser1;
+                    profileName = "User 1";
                     break;
                 case 5:
                     source = XMPUser2;
+                    profileName = "User 2";
                     break;
                 default:
                     return false;
@@ -1605,15 +1611,18 @@ namespace DDR4XMPEditor.DDR5SPD
                 case 1:
                     XMP1 = source;
                     XMP1Enabled = true;
+                    XMPProfile1Name = profileName;
                     break;
 
                 case 2:
                     XMP2 = source;
                     XMP2Enabled = true;
+                    XMPProfile2Name = profileName;
                     break;
                 case 3:
                     XMP3 = source;
                     XMP3Enabled = true;
+                    XMPProfile3Name = profileName;
                     break;
                 case 4:
                     XMPUser1 = source;

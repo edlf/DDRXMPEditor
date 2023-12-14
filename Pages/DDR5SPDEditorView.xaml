@@ -22,7 +22,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" Content="Min Cycle Time:"/>
-                <xctk:IntegerUpDown Grid.Row="0"  Grid.Column="1" Value="{Binding Profile.MinCycleTime}" Minimum="1" Maximum="65535" FormatString="N0"/>
+                <xctk:IntegerUpDown Grid.Row="0"  Grid.Column="1" Value="{Binding JedecProfile.MinCycleTime}" Minimum="1" Maximum="65535" FormatString="N0"/>
                 <TextBox Grid.Row="0" Grid.Column="2" IsReadOnly="True" Text="{Binding Frequency, StringFormat={}{0:F3}Mhz, Mode=OneWay}"/>
                 <TextBox Grid.Row="0" Grid.Column="3" IsReadOnly="True" Text="{Binding MegaTransfers, StringFormat={}{0:F3}MT/s, Mode=OneWay}"/>
             </Grid>
@@ -134,80 +134,80 @@
                 <Label Grid.Row="0" Grid.Column="7" Content="Ticks" FontWeight="Bold"/>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="tAA:" ToolTip="Read Command to First Data" FontStyle="Normal"/>
-                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Profile.tAA}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="1" Grid.Column="2" Content="{Binding Profile.tAATicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding JedecProfile.tAA}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="1" Grid.Column="2" Content="{Binding JedecProfile.tAATicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" Content="tRCD:" ToolTip="Activate to Read or Write Command Delay"/>
-                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding Profile.tRCD}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="2" Grid.Column="2" Content="{Binding Profile.tRCDTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding JedecProfile.tRCD}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="2" Grid.Column="2" Content="{Binding JedecProfile.tRCDTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="3" Grid.Column="0" Content="tRP:" ToolTip="Row Precharge Time"/>
-                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding Profile.tRP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="3" Grid.Column="2" Content="{Binding Profile.tRPTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding JedecProfile.tRP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="3" Grid.Column="2" Content="{Binding JedecProfile.tRPTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="4" Grid.Column="0" Content="tRAS:" ToolTip="Activate to Precharge Command Period"/>
-                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="1" Value="{Binding Profile.tRAS}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="4" Grid.Column="2" Content="{Binding Profile.tRASTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="1" Value="{Binding JedecProfile.tRAS}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="4" Grid.Column="2" Content="{Binding JedecProfile.tRASTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="5" Grid.Column="0" Content="tRC:" ToolTip="Activate to Activate or Refresh Command Period"/>
-                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="1" Value="{Binding Profile.tRC}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="5" Grid.Column="2" Content="{Binding Profile.tRCTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="1" Value="{Binding JedecProfile.tRC}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="5" Grid.Column="2" Content="{Binding JedecProfile.tRCTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="6" Grid.Column="0" Content="tWR:" ToolTip="Write Recovery Time"/>
-                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="1" Value="{Binding Profile.tWR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="6" Grid.Column="2" Content="{Binding Profile.tWRTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="1" Value="{Binding JedecProfile.tWR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="6" Grid.Column="2" Content="{Binding JedecProfile.tWRTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="7" Grid.Column="0" Content="tRFC1__slr:" ToolTip="Normal Refresh Recovery Time"/>
-                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="1" Value="{Binding Profile.tRFC1_slr}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="7" Grid.Column="2" Content="{Binding Profile.tRFC1_slrTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="1" Value="{Binding JedecProfile.tRFC1_slr}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="7" Grid.Column="2" Content="{Binding JedecProfile.tRFC1_slrTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="8" Grid.Column="0" Content="tRFC2__slr:" ToolTip="Fine Granularity Refresh Recovery Time"/>
-                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="1" Value="{Binding Profile.tRFC2_slr}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="8" Grid.Column="2" Content="{Binding Profile.tRFC2_slrTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="1" Value="{Binding JedecProfile.tRFC2_slr}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="8" Grid.Column="2" Content="{Binding JedecProfile.tRFC2_slrTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="9" Grid.Column="0" Content="tRFCsb__slr:" ToolTip="Same Bank Refresh Recovery Time"/>
-                <xctk:IntegerUpDown Grid.Row="9" Grid.Column="1" Value="{Binding Profile.tRFCsb_slr}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="9" Grid.Column="2" Content="{Binding Profile.tRFCsb_slrTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="9" Grid.Column="1" Value="{Binding JedecProfile.tRFCsb_slr}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="9" Grid.Column="2" Content="{Binding JedecProfile.tRFCsb_slrTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="1" Grid.Column="4" Content="tRRD__L:" ToolTip="Activate to Activate Command Delay for Same Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="5" Value="{Binding Profile.tRRD_L}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="6" Value="{Binding Profile.tRRD_L_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="1" Grid.Column="7" Content="{Binding Profile.tRRD_LTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="5" Value="{Binding JedecProfile.tRRD_L}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="6" Value="{Binding JedecProfile.tRRD_L_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="1" Grid.Column="7" Content="{Binding JedecProfile.tRRD_LTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="2" Grid.Column="4" Content="tCCD__L:" ToolTip="Read to Read Command Delay for Same Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="5" Value="{Binding Profile.tCCD_L}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="6" Value="{Binding Profile.tCCD_L_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="2" Grid.Column="7" Content="{Binding Profile.tCCD_LTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="5" Value="{Binding JedecProfile.tCCD_L}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="6" Value="{Binding JedecProfile.tCCD_L_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="2" Grid.Column="7" Content="{Binding JedecProfile.tCCD_LTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="3" Grid.Column="4" Content="tCCD__L__WR:" ToolTip="Write to Write Command Delay for Same Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="5" Value="{Binding Profile.tCCD_L_WR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="6" Value="{Binding Profile.tCCD_L_WR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="3" Grid.Column="7" Content="{Binding Profile.tCCD_L_WRTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="5" Value="{Binding JedecProfile.tCCD_L_WR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="6" Value="{Binding JedecProfile.tCCD_L_WR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="3" Grid.Column="7" Content="{Binding JedecProfile.tCCD_L_WRTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="4" Grid.Column="4" Content="tCCD__L__WR2:" ToolTip="Write to Write Command Delay for Same Bank Group, Second Write not RMW"/>
-                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="5" Value="{Binding Profile.tCCD_L_WR2}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="6" Value="{Binding Profile.tCCD_L_WR2_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="4" Grid.Column="7" Content="{Binding Profile.tCCD_L_WR2Ticks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="5" Value="{Binding JedecProfile.tCCD_L_WR2}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="6" Value="{Binding JedecProfile.tCCD_L_WR2_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="4" Grid.Column="7" Content="{Binding JedecProfile.tCCD_L_WR2Ticks, Mode=OneWay}"/>
 
                 <Label Grid.Row="5" Grid.Column="4" Content="tFAW:" ToolTip="Four Activate Window"/>
-                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="5" Value="{Binding Profile.tFAW}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="6" Value="{Binding Profile.tFAW_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="5" Grid.Column="7" Content="{Binding Profile.tFAWTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="5" Value="{Binding JedecProfile.tFAW}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="6" Value="{Binding JedecProfile.tFAW_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="5" Grid.Column="7" Content="{Binding JedecProfile.tFAWTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="6" Grid.Column="4" Content="tCCD__L__WTR:" ToolTip="Write to Read Command Delay for Same Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="5" Value="{Binding Profile.tCCD_L_WTR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="6" Value="{Binding Profile.tCCD_L_WTR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="6" Grid.Column="7" Content="{Binding Profile.tCCD_L_WTRTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="5" Value="{Binding JedecProfile.tCCD_L_WTR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="6" Value="{Binding JedecProfile.tCCD_L_WTR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="6" Grid.Column="7" Content="{Binding JedecProfile.tCCD_L_WTRTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="7" Grid.Column="4" Content="tCCD__S__WTR:" ToolTip="Write to Read Command Delay for Different Bank Group"/>
-                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="5" Value="{Binding Profile.tCCD_S_WTR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="6" Value="{Binding Profile.tCCD_S_WTR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="7" Grid.Column="7" Content="{Binding Profile.tCCD_S_WTRTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="5" Value="{Binding JedecProfile.tCCD_S_WTR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="6" Value="{Binding JedecProfile.tCCD_S_WTR_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="7" Grid.Column="7" Content="{Binding JedecProfile.tCCD_S_WTRTicks, Mode=OneWay}"/>
 
                 <Label Grid.Row="8" Grid.Column="4" Content="tRTP:" ToolTip="Read to Precharge Command Delay"/>
-                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="5" Value="{Binding Profile.tRTP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
-                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="6" Value="{Binding Profile.tRTP_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
-                <Label Grid.Row="8" Grid.Column="7" Content="{Binding Profile.tRTPTicks, Mode=OneWay}"/>
+                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="5" Value="{Binding JedecProfile.tRTP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="6" Value="{Binding JedecProfile.tRTP_lowerLimit}" Minimum="0" Maximum="255" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="8" Grid.Column="7" Content="{Binding JedecProfile.tRTPTicks, Mode=OneWay}"/>
             </Grid>
         </GroupBox>
     </StackPanel>

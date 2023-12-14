@@ -19,6 +19,7 @@ namespace DDR4XMPEditor.Pages
 
         public ushort sourceProfile { get; set; }
         public ushort targetProfile { get; set; }
+        public ushort importExportProfile { get; set; }
         public DDR5_SPD SPD { get; set; }
 
         public ObservableCollection<Tuple<string, DDR5_SPD.FormFactorEnum>> FormFactorCollection { get; set; }
@@ -83,7 +84,18 @@ namespace DDR4XMPEditor.Pages
             };
         }
 
+        public void exportXMPProfile() {
+            // SPD.XMP1.GetBytes();
+        }
+
+        public void importXMPProfile()
+        {
+
+        }
+
         private ICommand _copyCommand;
+        private ICommand _exportXMPCommand;
+        private ICommand _importXMPCommand;
 
         public class RelayCommand : ICommand
         {
@@ -132,11 +144,49 @@ namespace DDR4XMPEditor.Pages
             }
         }
 
-        private bool CanCopy()
+        public ICommand ExportXMPCommand
         {
-            return sourceProfile != targetProfile;
+            get
+            {
+                if (_exportXMPCommand == null)
+                {
+                    _exportXMPCommand = new RelayCommand(
+                        param => this.exportXMPProfile(),
+                        param => this.CanExport()
+                    );
+                }
+                return _exportXMPCommand;
+            }
         }
 
+        public ICommand ImportXMPCommand
+        {
+            get
+            {
+                if (_importXMPCommand == null)
+                {
+                    _importXMPCommand = new RelayCommand(
+                        param => this.importXMPProfile(),
+                        param => this.CanImport()
+                    );
+                }
+                return _importXMPCommand;
+            }
+        }
+
+        private bool CanCopy()
+        {
+            return ((sourceProfile >= 1 && sourceProfile <= 5) && (targetProfile >= 1 && targetProfile <= 5) && (sourceProfile != targetProfile));
+        }
+
+        private bool CanImport()
+        {
+            return (importExportProfile >= 1 && importExportProfile <= 5);
+        }
+        private bool CanExport()
+        {
+            return (importExportProfile >= 1 && importExportProfile <= 5);
+        }
         public DDR5MiscViewModel()
         {
             sourceProfile = 1;

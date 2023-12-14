@@ -359,7 +359,6 @@ namespace DDR4XMPEditor.DDR5SPD
                 return (ushort)Utilities.TimeToTicksDDR5((uint)(tRFC * 1000), MinCycleTime);
             }
         }
-
         public unsafe byte[] GetClSupported()
         {
             return new byte[] { rawXMP.clSupported[0], rawXMP.clSupported[1], rawXMP.clSupported[2], rawXMP.clSupported[3], rawXMP.clSupported[4] };
@@ -370,6 +369,469 @@ namespace DDR4XMPEditor.DDR5SPD
             rawXMP.clSupported[index] = value;
         }
 
+        public unsafe bool CL20 {
+            get {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 20);
+            }
+            set {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 20, value);
+            }
+        }
+        public unsafe bool CL22
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 22);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 22, value);
+            }
+        }
+
+        public unsafe bool CL24
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 24);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 24, value);
+            }
+        }
+
+        public unsafe bool CL26
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 26);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 26, value);
+            }
+        }
+
+        public unsafe bool CL28
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 28);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 28, value);
+            }
+        }
+
+        public unsafe bool CL30
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 30);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 30, value);
+            }
+        }
+        public unsafe bool CL32
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 32);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 32, value);
+            }
+        }
+
+        public unsafe bool CL34
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 34);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 34, value);
+            }
+        }
+
+        public unsafe bool CL36
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 36);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 36, value);
+            }
+        }
+
+        public unsafe bool CL38
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 38);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 38, value);
+            }
+        }
+
+        public unsafe bool CL40
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 40);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 40, value);
+            }
+        }
+        public unsafe bool CL42
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 42);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 42, value);
+            }
+        }
+
+        public unsafe bool CL44
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 44);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 44, value);
+            }
+        }
+
+        public unsafe bool CL46
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 46);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 46, value);
+            }
+        }
+
+        public unsafe bool CL48
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 48);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 48, value);
+            }
+        }
+        public unsafe bool CL50
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 50);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 50, value);
+            }
+        }
+        public unsafe bool CL52
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 52);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 52, value);
+            }
+        }
+
+        public unsafe bool CL54
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 54);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 54, value);
+            }
+        }
+
+        public unsafe bool CL56
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 56);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 56, value);
+            }
+        }
+
+        public unsafe bool CL58
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 58);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 58, value);
+            }
+        }
+        public unsafe bool CL60
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 60);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 60, value);
+            }
+        }
+        public unsafe bool CL62
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 62);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 62, value);
+            }
+        }
+
+        public unsafe bool CL64
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 64);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 64, value);
+            }
+        }
+
+        public unsafe bool CL66
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 66);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 66, value);
+            }
+        }
+
+        public unsafe bool CL68
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 68);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 68, value);
+            }
+        }
+        public unsafe bool CL70
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 70);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 70, value);
+            }
+        }
+        public unsafe bool CL72
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 72);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 72, value);
+            }
+        }
+
+        public unsafe bool CL74
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 74);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 74, value);
+            }
+        }
+
+        public unsafe bool CL76
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 76);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 76, value);
+            }
+        }
+
+        public unsafe bool CL78
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 78);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 78, value);
+            }
+        }
+        public unsafe bool CL80
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 80);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 80, value);
+            }
+        }
+        public unsafe bool CL82
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 82);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 82, value);
+            }
+        }
+
+        public unsafe bool CL84
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 84);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 84, value);
+            }
+        }
+
+        public unsafe bool CL86
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 86);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 86, value);
+            }
+        }
+
+        public unsafe bool CL88
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 88);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 88, value);
+            }
+        }
+        public unsafe bool CL90
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 90);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 90, value);
+            }
+        }
+        public unsafe bool CL92
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 92);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 92, value);
+            }
+        }
+
+        public unsafe bool CL94
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 94);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 94, value);
+            }
+        }
+
+        public unsafe bool CL96
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 96);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 96, value);
+            }
+        }
+
+        public unsafe bool CL98
+        {
+            get
+            {
+                return Utilities.IsCLSupportedDDR5(GetClSupported(), 98);
+            }
+            set
+            {
+                Utilities.SetCLSupportedDDR5(GetClSupported(), 98, value);
+            }
+        }
         public unsafe ushort tRRD_L
         {
             get
@@ -590,7 +1052,6 @@ namespace DDR4XMPEditor.DDR5SPD
                 rawXMP.tRTP_lowerLimit = (byte)value;
             }
         }
-
         public unsafe ushort CRC
         {
             get

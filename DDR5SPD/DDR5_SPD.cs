@@ -3,8 +3,9 @@ using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
+using static DDR5XMPEditor.DDR5SPD.EXPO;
 
-namespace DDR4XMPEditor.DDR5SPD
+namespace DDR5XMPEditor.DDR5SPD
 {
     public class DDR5_SPD : PropertyChangedBase
     {
@@ -29,7 +30,7 @@ namespace DDR4XMPEditor.DDR5SPD
             Count
         }
 
-        public enum Densities
+        public enum DensitiesEnum
         {
             _0Gb,
             _4Gb,
@@ -43,7 +44,22 @@ namespace DDR4XMPEditor.DDR5SPD
             Count
         }
 
+        public enum OperatingTemperatureRangeEnum : ushort
+        {
+            A1T = 0, // (-40 to +125 °C)
+            A2T = 1, // (-40 to +105 °C)
+            A3T = 2, //(-40 to +85 °C)
+            IT = 3,  //(-40 to +95 °C)
+            ST = 4,  //(-25 to +85 °C)
+            ET = 5,  //(-25 to +105 °C)
+            RT = 6,  //(0 to +45 °C)
+            NT = 7,  //(0 to +85 °C)
+            XT = 8,  //(0 to +95 °C)
+            Count = 9
+        }
+
         public const ushort partNumberSize = 30;
+        public const ushort heatSpreaderBit = 2;
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         private unsafe struct RawSPD
@@ -268,7 +284,7 @@ namespace DDR4XMPEditor.DDR5SPD
             // Bytes 555~639 (0x22B~27F): Manufacturer’s Specific Data
             public fixed byte reserved_555_639[639 - 555 - 1];
 
-            // End User bits (XMP/EXPO?)
+            // End User bits (XMP/EXPO)
             public fixed byte endUser[1024 - 640 + 1];
         }
 
@@ -292,21 +308,28 @@ namespace DDR4XMPEditor.DDR5SPD
             public fixed byte checksum[2];
         };
 
+        // Total SPD size
+        public const int TotalSize = 1024;
+
+        private RawSPD rawSPD;
+
         // XMP
         public static readonly byte[] XMPHeaderMagic = { 0x0C, 0x4A };
         public static readonly byte XMPVersion = 0x30;
         public static readonly ushort XMPOffset = 0x280;
         public static readonly ushort[] XMPProfilesOffset = { 0x2C0, 0x300, 0x340, 0x380, 0x3C0 };
 
-        // Total SPD size
-        public const int TotalSize = 1024;
-
-        private RawSPD rawSPD;
         private XMPHeader_3_0 xmpHeader;
         public const int TotalXMPHeaderSize = 0x40;
         private bool xmpFound = false;
         public const int TotalXMPProfiles = 5;
         private readonly XMP_3_0[] xmp = new XMP_3_0[TotalXMPProfiles];
+
+        // EXPO
+        public bool expoFound = false;
+        public const int TotalEXPOProfiles = 1; //TOD:O Support more than 1 profile
+        private readonly EXPO[] expo = new EXPO[TotalEXPOProfiles];
+        private RawEXPO rawExpo;
 
         private static readonly FormFactorEnum[] formFactorMap = new FormFactorEnum[(int)FormFactorEnum.Count]
         {
@@ -328,17 +351,17 @@ namespace DDR4XMPEditor.DDR5SPD
             FormFactorEnum.Reserved_15
         };
 
-        private static readonly Densities[] densityMap = new Densities[(int)Densities.Count]
+        private static readonly DensitiesEnum[] densityMap = new DensitiesEnum[(int)DensitiesEnum.Count]
         {
-            Densities._0Gb,
-            Densities._4Gb,
-            Densities._8Gb,
-            Densities._12Gb,
-            Densities._16Gb,
-            Densities._24Gb,
-            Densities._32Gb,
-            Densities._48Gb,
-            Densities._64Gb
+            DensitiesEnum._0Gb,
+            DensitiesEnum._4Gb,
+            DensitiesEnum._8Gb,
+            DensitiesEnum._12Gb,
+            DensitiesEnum._16Gb,
+            DensitiesEnum._24Gb,
+            DensitiesEnum._32Gb,
+            DensitiesEnum._48Gb,
+            DensitiesEnum._64Gb
         };
 
         private static readonly int[] bankGroupsBitsMap = new int[4] { 1, 2, 4, 8 };
@@ -374,15 +397,587 @@ namespace DDR4XMPEditor.DDR5SPD
                 Utilities.Convert16bitUnsignedInteger(ref rawSPD.maxCycleTime[0], ref rawSPD.maxCycleTime[1], value);
             }
         }
-
-        public unsafe byte[] GetClSupported()
+        public unsafe bool IsCLSupported(int cl)
         {
-            return new byte[] { rawSPD.clSupported[0], rawSPD.clSupported[1], rawSPD.clSupported[2], rawSPD.clSupported[3], rawSPD.clSupported[4] };
+            int[] mask = { 1, 2, 4, 8, 16, 32, 64, 128 };
+
+            // All valid CAS latencies are even numbers between 20 and 98
+            if (cl < 20 || cl > 98 || (cl % 2 != 0))
+            {
+                return false;
+            }
+
+            const int offset = 20;
+            int bit = (cl - offset) / 2;
+
+            if (cl >= 20 && cl <= 34)
+            {
+                int index = bit;
+                return (rawSPD.clSupported[0] & mask[index]) == mask[index];
+            }
+            else if (cl >= 36 && cl <= 50)
+            {
+                int index = bit - 8;
+                return (rawSPD.clSupported[1] & mask[index]) == mask[index];
+            }
+            else if (cl >= 52 && cl <= 66)
+            {
+                int index = bit - 16;
+                return (rawSPD.clSupported[2] & mask[index]) == mask[index];
+            }
+            else if (cl >= 68 && cl <= 82)
+            {
+                int index = bit - 24;
+                return (rawSPD.clSupported[3] & mask[index]) == mask[index];
+            }
+            else if (cl >= 84 && cl <= 98)
+            {
+                int index = bit - 32;
+                return (rawSPD.clSupported[4] & mask[index]) == mask[index];
+            }
+
+            // Should never reach this point
+            return false;
+        }
+        public unsafe void SetCLSupported(int cl, bool supported)
+        {
+            // All valid CAS latencies are even numbers between 20 and 98
+            if (cl < 20 || cl > 98 || (cl % 2 != 0))
+            {
+                return;
+            }
+
+            int[] mask = { 1, 2, 4, 8, 16, 32, 64, 128 };
+
+            const int offset = 20;
+            int bit = (cl - offset) / 2;
+
+            if (cl >= 20 && cl <= 34)
+            {
+                int index = bit;
+                if (supported)
+                {
+                    rawSPD.clSupported[0] |= (byte)mask[index];
+                }
+                else
+                {
+                    rawSPD.clSupported[0] &= (byte)~mask[index];
+                }
+            }
+            else if (cl >= 36 && cl <= 50)
+            {
+                int index = bit - 8;
+                if (supported)
+                {
+                    rawSPD.clSupported[1] |= (byte)mask[index];
+                }
+                else
+                {
+                    rawSPD.clSupported[1] &= (byte)~mask[index];
+                }
+            }
+            else if (cl >= 52 && cl <= 66)
+            {
+                int index = bit - 16;
+                if (supported)
+                {
+                    rawSPD.clSupported[2] |= (byte)mask[index];
+                }
+                else
+                {
+                    rawSPD.clSupported[2] &= (byte)~mask[index];
+                }
+            }
+            else if (cl >= 68 && cl <= 82)
+            {
+                int index = bit - 24;
+                if (supported)
+                {
+                    rawSPD.clSupported[3] |= (byte)mask[index];
+                }
+                else
+                {
+                    rawSPD.clSupported[3] &= (byte)~mask[index];
+                }
+            }
+            else if (cl >= 84 && cl <= 98)
+            {
+                int index = bit - 32;
+                if (supported)
+                {
+                    rawSPD.clSupported[4] |= (byte)mask[index];
+                }
+                else
+                {
+                    rawSPD.clSupported[4] &= (byte)~mask[index];
+                }
+            }
+        }
+        public unsafe bool CL20
+        {
+            get
+            {
+                return IsCLSupported(20);
+            }
+            set
+            {
+                SetCLSupported(20, value);
+            }
+        }
+        public unsafe bool CL22
+        {
+            get
+            {
+                return IsCLSupported(22);
+            }
+            set
+            {
+                SetCLSupported(22, value);
+            }
         }
 
-        public unsafe void SetClSupported(int index, byte value)
+        public unsafe bool CL24
         {
-            rawSPD.clSupported[index] = value;
+            get
+            {
+                return IsCLSupported(24);
+            }
+            set
+            {
+                SetCLSupported(24, value);
+            }
+        }
+
+        public unsafe bool CL26
+        {
+            get
+            {
+                return IsCLSupported(26);
+            }
+            set
+            {
+                SetCLSupported(26, value);
+            }
+        }
+
+        public unsafe bool CL28
+        {
+            get
+            {
+                return IsCLSupported(28);
+            }
+            set
+            {
+                SetCLSupported(28, value);
+            }
+        }
+
+        public unsafe bool CL30
+        {
+            get
+            {
+                return IsCLSupported(30);
+            }
+            set
+            {
+                SetCLSupported(30, value);
+            }
+        }
+        public unsafe bool CL32
+        {
+            get
+            {
+                return IsCLSupported(32);
+            }
+            set
+            {
+                SetCLSupported(32, value);
+            }
+        }
+
+        public unsafe bool CL34
+        {
+            get
+            {
+                return IsCLSupported(34);
+            }
+            set
+            {
+                SetCLSupported(34, value);
+            }
+        }
+
+        public unsafe bool CL36
+        {
+            get
+            {
+                return IsCLSupported(36);
+            }
+            set
+            {
+                SetCLSupported(36, value);
+            }
+        }
+
+        public unsafe bool CL38
+        {
+            get
+            {
+                return IsCLSupported(38);
+            }
+            set
+            {
+                SetCLSupported(38, value);
+            }
+        }
+
+        public unsafe bool CL40
+        {
+            get
+            {
+                return IsCLSupported(40);
+            }
+            set
+            {
+                SetCLSupported(40, value);
+            }
+        }
+        public unsafe bool CL42
+        {
+            get
+            {
+                return IsCLSupported(42);
+            }
+            set
+            {
+                SetCLSupported(42, value);
+            }
+        }
+
+        public unsafe bool CL44
+        {
+            get
+            {
+                return IsCLSupported(44);
+            }
+            set
+            {
+                SetCLSupported(44, value);
+            }
+        }
+
+        public unsafe bool CL46
+        {
+            get
+            {
+                return IsCLSupported(46);
+            }
+            set
+            {
+                SetCLSupported(46, value);
+            }
+        }
+
+        public unsafe bool CL48
+        {
+            get
+            {
+                return IsCLSupported(48);
+            }
+            set
+            {
+                SetCLSupported(48, value);
+            }
+        }
+        public unsafe bool CL50
+        {
+            get
+            {
+                return IsCLSupported(50);
+            }
+            set
+            {
+                SetCLSupported(50, value);
+            }
+        }
+        public unsafe bool CL52
+        {
+            get
+            {
+                return IsCLSupported(52);
+            }
+            set
+            {
+                SetCLSupported(52, value);
+            }
+        }
+
+        public unsafe bool CL54
+        {
+            get
+            {
+                return IsCLSupported(54);
+            }
+            set
+            {
+                SetCLSupported(54, value);
+            }
+        }
+
+        public unsafe bool CL56
+        {
+            get
+            {
+                return IsCLSupported(56);
+            }
+            set
+            {
+                SetCLSupported(56, value);
+            }
+        }
+
+        public unsafe bool CL58
+        {
+            get
+            {
+                return IsCLSupported(58);
+            }
+            set
+            {
+                SetCLSupported(58, value);
+            }
+        }
+        public unsafe bool CL60
+        {
+            get
+            {
+                return IsCLSupported(60);
+            }
+            set
+            {
+                SetCLSupported(60, value);
+            }
+        }
+        public unsafe bool CL62
+        {
+            get
+            {
+                return IsCLSupported(62);
+            }
+            set
+            {
+                SetCLSupported(62, value);
+            }
+        }
+
+        public unsafe bool CL64
+        {
+            get
+            {
+                return IsCLSupported(64);
+            }
+            set
+            {
+                SetCLSupported(64, value);
+            }
+        }
+
+        public unsafe bool CL66
+        {
+            get
+            {
+                return IsCLSupported(66);
+            }
+            set
+            {
+                SetCLSupported(66, value);
+            }
+        }
+
+        public unsafe bool CL68
+        {
+            get
+            {
+                return IsCLSupported(68);
+            }
+            set
+            {
+                SetCLSupported(68, value);
+            }
+        }
+        public unsafe bool CL70
+        {
+            get
+            {
+                return IsCLSupported(70);
+            }
+            set
+            {
+                SetCLSupported(70, value);
+            }
+        }
+        public unsafe bool CL72
+        {
+            get
+            {
+                return IsCLSupported(72);
+            }
+            set
+            {
+                SetCLSupported(72, value);
+            }
+        }
+
+        public unsafe bool CL74
+        {
+            get
+            {
+                return IsCLSupported(74);
+            }
+            set
+            {
+                SetCLSupported(74, value);
+            }
+        }
+
+        public unsafe bool CL76
+        {
+            get
+            {
+                return IsCLSupported(76);
+            }
+            set
+            {
+                SetCLSupported(76, value);
+            }
+        }
+
+        public unsafe bool CL78
+        {
+            get
+            {
+                return IsCLSupported(78);
+            }
+            set
+            {
+                SetCLSupported(78, value);
+            }
+        }
+        public unsafe bool CL80
+        {
+            get
+            {
+                return IsCLSupported(80);
+            }
+            set
+            {
+                SetCLSupported(80, value);
+            }
+        }
+        public unsafe bool CL82
+        {
+            get
+            {
+                return IsCLSupported(82);
+            }
+            set
+            {
+                SetCLSupported(82, value);
+            }
+        }
+
+        public unsafe bool CL84
+        {
+            get
+            {
+                return IsCLSupported(84);
+            }
+            set
+            {
+                SetCLSupported(84, value);
+            }
+        }
+
+        public unsafe bool CL86
+        {
+            get
+            {
+                return IsCLSupported(86);
+            }
+            set
+            {
+                SetCLSupported(86, value);
+            }
+        }
+
+        public unsafe bool CL88
+        {
+            get
+            {
+                return IsCLSupported(88);
+            }
+            set
+            {
+                SetCLSupported(88, value);
+            }
+        }
+        public unsafe bool CL90
+        {
+            get
+            {
+                return IsCLSupported(90);
+            }
+            set
+            {
+                SetCLSupported(90, value);
+            }
+        }
+        public unsafe bool CL92
+        {
+            get
+            {
+                return IsCLSupported(92);
+            }
+            set
+            {
+                SetCLSupported(92, value);
+            }
+        }
+
+        public unsafe bool CL94
+        {
+            get
+            {
+                return IsCLSupported(94);
+            }
+            set
+            {
+                SetCLSupported(94, value);
+            }
+        }
+
+        public unsafe bool CL96
+        {
+            get
+            {
+                return IsCLSupported(96);
+            }
+            set
+            {
+                SetCLSupported(96, value);
+            }
+        }
+
+        public unsafe bool CL98
+        {
+            get
+            {
+                return IsCLSupported(98);
+            }
+            set
+            {
+                SetCLSupported(98, value);
+            }
         }
 
         public unsafe ushort tAA
@@ -926,7 +1521,8 @@ namespace DDR4XMPEditor.DDR5SPD
             }
         }
 
-        public unsafe ushort BanksPerBankGroup {
+        public unsafe ushort BanksPerBankGroup
+        {
             get => (ushort)banksPerBankGroupBitsMap[rawSPD.firstBankGroups & 0x7];
             set
             {
@@ -993,12 +1589,12 @@ namespace DDR4XMPEditor.DDR5SPD
                 }
             }
         }
-        public Densities? Density
+        public DensitiesEnum? Density
         {
             get
             {
                 ushort index = (ushort)(rawSPD.firstDensityPackage & 0xF);
-                if (index >= (ushort)Densities.Count)
+                if (index >= (ushort)DensitiesEnum.Count)
                 {
                     return null;
                 }
@@ -1068,6 +1664,30 @@ namespace DDR4XMPEditor.DDR5SPD
                 }
             }
         }
+
+        public unsafe bool HeatSpreader
+        {
+            get
+            {
+                return Utilities.GetBit(rawSPD.dimmAttributes, heatSpreaderBit);
+            }
+            set
+            {
+                rawSPD.dimmAttributes = Utilities.SetBit(rawSPD.dimmAttributes, heatSpreaderBit, value);
+            }
+        }
+        public unsafe OperatingTemperatureRangeEnum OperatingTemperatureRange
+        {
+            get
+            {
+                return (OperatingTemperatureRangeEnum)(rawSPD.dimmAttributes >> 4);
+            }
+            set
+            {
+                // TODO
+            }
+        }
+
         public unsafe ushort CRC
         {
             get
@@ -1149,23 +1769,106 @@ namespace DDR4XMPEditor.DDR5SPD
             get => (xmpHeader.profileEnabled & 0x4) == 0x4;
             set
             {
-                if (value)
+                if (!expoFound)
                 {
-                    xmpHeader.profileEnabled |= 0x4;
+                    if (value)
+                    {
+                        xmpHeader.profileEnabled |= 0x4;
+                    }
+                    else
+                    {
+                        xmpHeader.profileEnabled &= 0xFB;
+                    }
+                }
+            }
+        }
+        public bool XMPUser1Exists
+        {
+            get
+            {
+                if (XMPUser1 == null || expoFound)
+                {
+                    return false;
                 }
                 else
                 {
-                    xmpHeader.profileEnabled &= 0xFB;
+                    return XMPUser1.CheckCRCValidity() && !XMPUser1.IsEmpty();
                 }
             }
         }
         public bool XMPUser1Enabled
         {
-            get { return XMPUser1.CheckCRCValidity() && !XMPUser1.IsEmpty(); }
+            get
+            {
+                if (XMPUser1 == null || expoFound)
+                {
+                    return false;
+                }
+                else
+                {
+                    return XMPUser1Exists;
+                }
+            }
+            set
+            {
+                if (!expoFound) {
+                    if (value)
+                    {
+                        // User has enabled profile
+                        if (!XMPUser1Exists)
+                        {
+                            XMPUser1.LoadSample();
+                        }
+                    }
+                    else
+                    {
+                        XMPUser1.Wipe();
+                    }
+                }
+            }
+        }
+        public bool XMPUser2Exists
+        {
+            get
+            {
+                if (XMPUser2 == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return XMPUser2.CheckCRCValidity() && !XMPUser2.IsEmpty();
+                }
+            }
         }
         public bool XMPUser2Enabled
         {
-            get { return XMPUser2.CheckCRCValidity() && !XMPUser2.IsEmpty(); }
+            get
+            {
+                if (XMPUser2 == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return XMPUser2Exists;
+                }
+            }
+            set
+            {
+                if (value)
+                {
+                    // User has enabled profile
+                    if (!XMPUser2Exists)
+                    {
+                        XMPUser2.LoadSample();
+                    }
+                }
+                else
+                {
+                    XMPUser2.Wipe();
+                }
+            }
         }
         public unsafe string XMPProfile1Name
         {
@@ -1248,7 +1951,14 @@ namespace DDR4XMPEditor.DDR5SPD
             }
         }
 
-        public byte[] GetXMPHeaderBytes() {
+        public unsafe bool EXPO1Enabled {
+            get
+            {
+                return expoFound;
+            }
+        }
+        public byte[] GetXMPHeaderBytes()
+        {
             byte[] bytes = new byte[TotalXMPHeaderSize];
 
             // Convert raw SPD to byte array.
@@ -1273,10 +1983,11 @@ namespace DDR4XMPEditor.DDR5SPD
             return bytes;
         }
 
-        public void UpdateXMPHeaderCRC() {
+        public void UpdateXMPHeaderCRC()
+        {
             // Update XMP Header CRC
             var rawXmpHeaderBytes = GetXMPHeaderBytes();
-            XMPHeaderCRC = Utilities.Crc16(rawXmpHeaderBytes.Take(0x3D+1).ToArray());
+            XMPHeaderCRC = Utilities.Crc16(rawXmpHeaderBytes.Take(0x3D + 1).ToArray());
         }
 
         public void UpdateCrc()
@@ -1285,7 +1996,8 @@ namespace DDR4XMPEditor.DDR5SPD
             var rawSpdBytes = GetBytes();
             CRC = Utilities.Crc16(rawSpdBytes.Take(0x1FD + 1).ToArray());
 
-            if (xmpFound) {
+            if (xmpFound)
+            {
                 UpdateXMPHeaderCRC();
 
                 // Update XMP Profiles CRCs too (only for enabled profiles)
@@ -1297,11 +2009,11 @@ namespace DDR4XMPEditor.DDR5SPD
                 {
                     xmp[1].UpdateCrc();
                 }
-                if (XMP3Enabled)
+                if (XMP3Enabled && !expoFound)
                 {
                     xmp[2].UpdateCrc();
                 }
-                if (XMPUser1Enabled)
+                if (XMPUser1Enabled && !expoFound)
                 {
                     xmp[3].UpdateCrc();
                 }
@@ -1356,14 +2068,25 @@ namespace DDR4XMPEditor.DDR5SPD
 
             // Copy XMP Profiles
             byte[] xmp1Bytes = XMP1.GetBytes();
-            byte[] xmp2Bytes = XMP2.GetBytes();
-            byte[] xmp3Bytes = XMP3.GetBytes();
-            byte[] xmp4Bytes = XMPUser1.GetBytes();
-            byte[] xmp5Bytes = XMPUser2.GetBytes();
             Array.Copy(xmp1Bytes, 0, bytes, XMPProfilesOffset[0], xmp1Bytes.Length);
+            byte[] xmp2Bytes = XMP2.GetBytes();
             Array.Copy(xmp2Bytes, 0, bytes, XMPProfilesOffset[1], xmp2Bytes.Length);
-            Array.Copy(xmp3Bytes, 0, bytes, XMPProfilesOffset[2], xmp3Bytes.Length);
-            Array.Copy(xmp4Bytes, 0, bytes, XMPProfilesOffset[3], xmp4Bytes.Length);
+
+            // EXPO takes XMP profile 3 and user profile 1
+            if (expoFound)
+            {
+                byte[] expo1Bytes = EXPO1.GetBytes();
+                Array.Copy(expo1Bytes, 0, bytes, EXPO.EXPOOffset, expo1Bytes.Length);
+            }
+            else
+            {
+                byte[] xmp3Bytes = XMP3.GetBytes();
+                Array.Copy(xmp3Bytes, 0, bytes, XMPProfilesOffset[2], xmp3Bytes.Length);
+                byte[] xmp4Bytes = XMPUser1.GetBytes();
+                Array.Copy(xmp4Bytes, 0, bytes, XMPProfilesOffset[3], xmp4Bytes.Length);
+            }
+
+            byte[] xmp5Bytes = XMPUser2.GetBytes();
             Array.Copy(xmp5Bytes, 0, bytes, XMPProfilesOffset[4], xmp5Bytes.Length);
 
             return bytes;
@@ -1388,7 +2111,8 @@ namespace DDR4XMPEditor.DDR5SPD
                 handle.Free();
 
                 // Check what memory type we got
-                if (spd.rawSPD.memoryType != 0x12) {
+                if (spd.rawSPD.memoryType != 0x12)
+                {
                     throw new ApplicationException("SPD is for non DDR5, this is not supported.");
                 }
 
@@ -1400,19 +2124,42 @@ namespace DDR4XMPEditor.DDR5SPD
                 var xmpBytes = bytes.Skip(XMPOffset).ToArray();
                 var xmpHeaderMagic = xmpBytes.Take(XMPHeaderMagic.Length);
 
+                var expoBytes = bytes.Skip(EXPO.EXPOOffset).Take(EXPO.EXPOSize).ToArray();
+                var expoHeaderMagic = expoBytes.Take(EXPO.EXPOHeaderMagic.Length);
+
+                // Check if EXPO is present
+                spd.expoFound = expoHeaderMagic.SequenceEqual(EXPO.EXPOHeaderMagic);
+
+                // Read the EXPO block
+                handle = GCHandle.Alloc(expoBytes, GCHandleType.Pinned);
+                spd.rawExpo = Marshal.PtrToStructure<EXPO.RawEXPO>(handle.AddrOfPinnedObject());
+                handle.Free();
+
+                // Parse EXPO Profiles (if any)
+                spd.ParseEXPO(expoBytes);
+                // Read the EXPO block
+                handle = GCHandle.Alloc(expoBytes, GCHandleType.Pinned);
+                spd.rawExpo = Marshal.PtrToStructure<EXPO.RawEXPO>(handle.AddrOfPinnedObject());
+                handle.Free();
+
+                // Parse EXPO Profiles (if any)
+                spd.ParseEXPO(expoBytes);
+
                 // Check if XMP 3.0 is present
-                if (xmpHeaderMagic.SequenceEqual(XMPHeaderMagic) && xmpBytes[2] == XMPVersion)
+                spd.xmpFound = (xmpHeaderMagic.SequenceEqual(XMPHeaderMagic) && xmpBytes[2] == XMPVersion);
+
+                // Read the XMP header
+                handle = GCHandle.Alloc(xmpBytes, GCHandleType.Pinned);
+                spd.xmpHeader = Marshal.PtrToStructure<XMPHeader_3_0>(handle.AddrOfPinnedObject());
+                handle.Free();
+
+                // Parse the XMP profiles (if any)
+                spd.ParseXMP(xmpBytes.Skip(Marshal.SizeOf<XMPHeader_3_0>()).ToArray());
+
+                if (spd.expoFound)
                 {
-                    // Mark XMP for update on save
-                    spd.xmpFound = true;
-
-                    // Read the XMP header.
-                    handle = GCHandle.Alloc(xmpBytes, GCHandleType.Pinned);
-                    spd.xmpHeader = Marshal.PtrToStructure<XMPHeader_3_0>(handle.AddrOfPinnedObject());
-                    handle.Free();
-
-                    // Parse the XMP profiles (if any).
-                    spd.ParseXMP(xmpBytes.Skip(Marshal.SizeOf<XMPHeader_3_0>()).ToArray());
+                    MessageBox.Show("Warning EXPO found.\n\nCurrently the support is very experimental/incomplete!\n\nNOTE: XMP Profile 3 and User Profile 1 will not work to prevent corrupting EXPO.", "EXPO Warning",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
 
                 return spd;
@@ -1423,124 +2170,6 @@ namespace DDR4XMPEditor.DDR5SPD
             }
 
             return null;
-        }
-
-        public static bool IsCLSupported(byte[] clSupported, int cl)
-        {
-            int[] mask = { 1, 2, 4, 8, 16, 32, 64, 128 };
-
-            // All valid CAS latencies are even numbers between 20 and 98
-            if (cl < 20 || cl > 98 || (cl % 2 != 0))
-            {
-                return false;
-            }
-
-            const int offset = 20;
-            int bit = (cl - offset) / 2;
-
-            if (cl >= 20 && cl <= 34)
-            {
-                int index = bit;
-                return (clSupported[0] & mask[index]) == mask[index];
-            }
-            else if (cl >= 36 && cl <= 50)
-            {
-                int index = bit - 8;
-                return (clSupported[1] & mask[index]) == mask[index];
-            }
-            else if (cl >= 52 && cl <= 66)
-            {
-                int index = bit - 16;
-                return (clSupported[2] & mask[index]) == mask[index];
-            }
-            else if (cl >= 68 && cl <= 82)
-            {
-                int index = bit - 24;
-                return (clSupported[3] & mask[index]) == mask[index];
-            }
-            else if (cl >= 84 && cl <= 98)
-            {
-                int index = bit - 32;
-                return (clSupported[4] & mask[index]) == mask[index];
-            }
-
-            // Should never reach this point
-            return false;
-        }
-
-        public static void SetCLSupported(byte[] clSupported, int cl, bool supported)
-        {
-            // All valid CAS latencies are even numbers between 20 and 98
-            if (cl < 20 || cl > 98 || (cl % 2 != 0))
-            {
-                return;
-            }
-
-            int[] mask = { 1, 2, 4, 8, 16, 32, 64, 128 };
-
-            const int offset = 20;
-            int bit = (cl - offset) / 2;
-
-            if (cl >= 20 && cl <= 34)
-            {
-                int index = bit;
-                if (supported)
-                {
-                    clSupported[0] |= (byte)mask[index];
-                }
-                else
-                {
-                    clSupported[0] &= (byte)~mask[index];
-                }
-            }
-            else if (cl >= 36 && cl <= 50)
-            {
-                int index = bit - 8;
-                if (supported)
-                {
-                    clSupported[1] |= (byte)mask[index];
-                }
-                else
-                {
-                    clSupported[1] &= (byte)~mask[index];
-                }
-            }
-            else if (cl >= 52 && cl <= 66)
-            {
-                int index = bit - 16;
-                if (supported)
-                {
-                    clSupported[2] |= (byte)mask[index];
-                }
-                else
-                {
-                    clSupported[2] &= (byte)~mask[index];
-                }
-            }
-            else if (cl >= 68 && cl <= 82)
-            {
-                int index = bit - 24;
-                if (supported)
-                {
-                    clSupported[3] |= (byte)mask[index];
-                }
-                else
-                {
-                    clSupported[3] &= (byte)~mask[index];
-                }
-            }
-            else if (cl >= 84 && cl <= 98)
-            {
-                int index = bit - 32;
-                if (supported)
-                {
-                    clSupported[4] |= (byte)mask[index];
-                }
-                else
-                {
-                    clSupported[4] &= (byte)~mask[index];
-                }
-            }
         }
         public XMP_3_0 XMP1
         {
@@ -1567,8 +2196,13 @@ namespace DDR4XMPEditor.DDR5SPD
             get => xmp[4];
             set => xmp[4] = value;
         }
-
-        public bool copyXmpProfile(ushort sourceProfile, ushort targetProfile) {
+        public EXPO EXPO1
+        {
+            get => expo[0];
+            set => expo[0] = value;
+        }
+        public bool copyXmpProfile(ushort sourceProfile, ushort targetProfile)
+        {
             if (sourceProfile == targetProfile)
             {
                 return false;
@@ -1577,7 +2211,8 @@ namespace DDR4XMPEditor.DDR5SPD
             XMP_3_0 source;
             string profileName;
 
-            switch (sourceProfile) {
+            switch (sourceProfile)
+            {
                 case 1:
                     source = XMP1;
                     profileName = XMPProfile1Name;
@@ -1641,11 +2276,28 @@ namespace DDR4XMPEditor.DDR5SPD
         {
             XMP1 = XMP_3_0.Parse(1, bytes.Take(XMP_3_0.Size).ToArray());
             XMP2 = XMP_3_0.Parse(2, bytes.Skip(XMP_3_0.Size).Take(XMP_3_0.Size).ToArray());
-            XMP3 = XMP_3_0.Parse(3, bytes.Skip(XMP_3_0.Size*2).Take(XMP_3_0.Size).ToArray());
 
-            // User profiles
-            XMPUser1 = XMP_3_0.Parse(4, bytes.Skip(XMP_3_0.Size*3).Take(XMP_3_0.Size).ToArray());
-            XMPUser2 = XMP_3_0.Parse(5, bytes.Skip(XMP_3_0.Size*4).Take(XMP_3_0.Size).ToArray());
+            // Don't parse profile 3, and User profile 1 if expo is present
+            if (expoFound)
+            {
+                XMP3 = new XMP_3_0();
+
+                // User profiles
+                XMPUser1 = new XMP_3_0();
+            }
+            else
+            {
+                XMP3 = XMP_3_0.Parse(3, bytes.Skip(XMP_3_0.Size * 2).Take(XMP_3_0.Size).ToArray());
+
+                // User profiles
+                XMPUser1 = XMP_3_0.Parse(4, bytes.Skip(XMP_3_0.Size * 3).Take(XMP_3_0.Size).ToArray());
+            }
+
+            XMPUser2 = XMP_3_0.Parse(5, bytes.Skip(XMP_3_0.Size * 4).Take(XMP_3_0.Size).ToArray());
+        }
+        private void ParseEXPO(byte[] bytes)
+        {
+            EXPO1 = EXPO.Parse(1, bytes.Skip(EXPO.EXPOHeaderSize).Take(EXPO.EXPOProfileSize).ToArray());
         }
     }
 }

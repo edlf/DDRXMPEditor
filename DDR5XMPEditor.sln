@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDR4XMPEditor", "DDR4XMPEditor.csproj", "{C842B61E-7D45-4E03-946C-34354F7C4D2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDR5XMPEditor", "DDR5XMPEditor.csproj", "{C842B61E-7D45-4E03-946C-34354F7C4D2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

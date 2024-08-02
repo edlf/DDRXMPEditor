@@ -1,21 +1,22 @@
-﻿using DDR4XMPEditor.DDR5SPD;
+﻿using DDR5XMPEditor.DDR5SPD;
 using Stylet;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
-using System.Windows.Data;
 
-namespace DDR4XMPEditor.Pages
+namespace DDR5XMPEditor.Pages
 {
     public class XMP3EditorViewModel : Screen
     {
-        public XMP_3_0 XMPProfile {
+        public XMP_3_0 XMPProfile
+        {
             get
             {
-                if (SPD != null) {
-                    if (ProfileNumber == 1) {
+                if (SPD != null)
+                {
+                    if (ProfileNumber == 1)
+                    {
                         return SPD.XMP1;
                     }
                     if (ProfileNumber == 2)
@@ -37,9 +38,10 @@ namespace DDR4XMPEditor.Pages
                 }
 
                 return null;
-            } 
-            
-            set {
+            }
+
+            set
+            {
                 if (SPD != null)
                 {
                     if (ProfileNumber == 1)
@@ -71,8 +73,10 @@ namespace DDR4XMPEditor.Pages
         public ObservableCollection<Tuple<string, XMP_3_0.CommandRatesEnum>> CommandRatesCollection { get; set; }
         public string ProfileName
         {
-            get {
-                if (XMPProfile == null || SPD == null) {
+            get
+            {
+                if (XMPProfile == null || SPD == null)
+                {
                     return "";
                 }
 
@@ -88,7 +92,8 @@ namespace DDR4XMPEditor.Pages
                 {
                     return SPD.XMPProfile3Name;
                 }
-                else if (ProfileNumber == 4) {
+                else if (ProfileNumber == 4)
+                {
                     return "User profile 1";
                 }
                 else if (ProfileNumber == 5)
@@ -98,7 +103,8 @@ namespace DDR4XMPEditor.Pages
 
                 return "";
             }
-            set {
+            set
+            {
                 if ((XMPProfile != null && SPD != null) && !XMPProfile.IsUserProfile())
                 {
                     if (ProfileNumber == 1)
@@ -116,16 +122,18 @@ namespace DDR4XMPEditor.Pages
                 }
             }
         }
-        public bool IsNameEnabled {
-            get { 
-                if (!IsEnabled || XMPProfile == null) {
+        public bool IsNameEnabled
+        {
+            get
+            {
+                if (!IsEnabled || XMPProfile == null)
+                {
                     return false;
                 }
 
                 return !XMPProfile.IsUserProfile();
             }
         }
-
         public double? Frequency
         {
             get
@@ -138,7 +146,6 @@ namespace DDR4XMPEditor.Pages
                 return Math.Round(1.0 / ((double)XMPProfile.MinCycleTime / 1000000));
             }
         }
-
         public double? MegaTransfers
         {
             get
@@ -156,7 +163,6 @@ namespace DDR4XMPEditor.Pages
             get => XMPProfile != null && XMPProfile.CommandRate.HasValue ? XMPProfile.CommandRate.Value : XMP_3_0.CommandRatesEnum._undefined;
             set => XMPProfile.CommandRate = value;
         }
-
         public XMP3EditorViewModel(int profileNumber)
         {
             ProfileNumber = profileNumber;

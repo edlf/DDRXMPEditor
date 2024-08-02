@@ -1,4 +1,4 @@
-﻿namespace DDR4XMPEditor.Events
+﻿namespace DDR5XMPEditor.Events
 {
     public class SelectedSPDFileEvent
     {

@@ -1,16 +1,12 @@
-﻿<UserControl x:Class="DDR4XMPEditor.Pages.XMP3EditorView"
+﻿<UserControl x:Class="DDR5XMPEditor.Pages.XMP3EditorView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:DDR4XMPEditor.Pages"
+      xmlns:local="clr-namespace:DDR5XMPEditor.Pages"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
       mc:Ignorable="d"
       IsEnabled="{Binding IsEnabled}">
-
-    <UserControl.Resources>
-        <local:TicksToTimeConverter x:Key="TicksToTimeConverter"/>
-    </UserControl.Resources>
 
     <StackPanel>
         <GroupBox Header="Profile">
@@ -113,42 +109,42 @@
                 <CheckBox Grid.Row="3" Grid.Column="0" Content="26" IsChecked="{Binding XMPProfile.CL26}"/>
                 <CheckBox Grid.Row="4" Grid.Column="0" Content="28" IsChecked="{Binding XMPProfile.CL28}"/>
                 <CheckBox Grid.Row="5" Grid.Column="0" Content="30" IsChecked="{Binding XMPProfile.CL30}"/>
-
+                
                 <CheckBox Grid.Row="0" Grid.Column="1" Content="32" IsChecked="{Binding XMPProfile.CL32}"/>
                 <CheckBox Grid.Row="1" Grid.Column="1" Content="34" IsChecked="{Binding XMPProfile.CL34}"/>
                 <CheckBox Grid.Row="2" Grid.Column="1" Content="36" IsChecked="{Binding XMPProfile.CL36}"/>
                 <CheckBox Grid.Row="3" Grid.Column="1" Content="38" IsChecked="{Binding XMPProfile.CL38}"/>
                 <CheckBox Grid.Row="4" Grid.Column="1" Content="40" IsChecked="{Binding XMPProfile.CL40}"/>
                 <CheckBox Grid.Row="5" Grid.Column="1" Content="42" IsChecked="{Binding XMPProfile.CL42}"/>
-
+                
                 <CheckBox Grid.Row="0" Grid.Column="2" Content="44" IsChecked="{Binding XMPProfile.CL44}"/>
                 <CheckBox Grid.Row="1" Grid.Column="2" Content="46" IsChecked="{Binding XMPProfile.CL46}"/>
                 <CheckBox Grid.Row="2" Grid.Column="2" Content="48" IsChecked="{Binding XMPProfile.CL48}"/>
                 <CheckBox Grid.Row="3" Grid.Column="2" Content="50" IsChecked="{Binding XMPProfile.CL50}"/>
                 <CheckBox Grid.Row="4" Grid.Column="2" Content="52" IsChecked="{Binding XMPProfile.CL52}"/>
                 <CheckBox Grid.Row="5" Grid.Column="2" Content="54" IsChecked="{Binding XMPProfile.CL54}"/>
-
+                
                 <CheckBox Grid.Row="0" Grid.Column="3" Content="56" IsChecked="{Binding XMPProfile.CL56}"/>
                 <CheckBox Grid.Row="1" Grid.Column="3" Content="58" IsChecked="{Binding XMPProfile.CL58}"/>
                 <CheckBox Grid.Row="2" Grid.Column="3" Content="60" IsChecked="{Binding XMPProfile.CL60}"/>
                 <CheckBox Grid.Row="3" Grid.Column="3" Content="62" IsChecked="{Binding XMPProfile.CL62}"/>
                 <CheckBox Grid.Row="4" Grid.Column="3" Content="64" IsChecked="{Binding XMPProfile.CL64}"/>
                 <CheckBox Grid.Row="5" Grid.Column="3" Content="66" IsChecked="{Binding XMPProfile.CL66}"/>
-
+                
                 <CheckBox Grid.Row="0" Grid.Column="4" Content="68" IsChecked="{Binding XMPProfile.CL68}"/>
                 <CheckBox Grid.Row="1" Grid.Column="4" Content="70" IsChecked="{Binding XMPProfile.CL70}"/>
                 <CheckBox Grid.Row="2" Grid.Column="4" Content="72" IsChecked="{Binding XMPProfile.CL72}"/>
                 <CheckBox Grid.Row="3" Grid.Column="4" Content="74" IsChecked="{Binding XMPProfile.CL74}"/>
                 <CheckBox Grid.Row="4" Grid.Column="4" Content="76" IsChecked="{Binding XMPProfile.CL76}"/>
                 <CheckBox Grid.Row="5" Grid.Column="4" Content="78" IsChecked="{Binding XMPProfile.CL78}"/>
-
+                
                 <CheckBox Grid.Row="0" Grid.Column="5" Content="80" IsChecked="{Binding XMPProfile.CL80}"/>
                 <CheckBox Grid.Row="1" Grid.Column="5" Content="82" IsChecked="{Binding XMPProfile.CL82}"/>
                 <CheckBox Grid.Row="2" Grid.Column="5" Content="84" IsChecked="{Binding XMPProfile.CL84}"/>
                 <CheckBox Grid.Row="3" Grid.Column="5" Content="86" IsChecked="{Binding XMPProfile.CL86}"/>
                 <CheckBox Grid.Row="4" Grid.Column="5" Content="88" IsChecked="{Binding XMPProfile.CL88}"/>
                 <CheckBox Grid.Row="5" Grid.Column="5" Content="90" IsChecked="{Binding XMPProfile.CL90}"/>
-
+                
                 <CheckBox Grid.Row="0" Grid.Column="6" Content="92" IsChecked="{Binding XMPProfile.CL92}"/>
                 <CheckBox Grid.Row="1" Grid.Column="6" Content="94" IsChecked="{Binding XMPProfile.CL94}"/>
                 <CheckBox Grid.Row="2" Grid.Column="6" Content="96" IsChecked="{Binding XMPProfile.CL96}"/>

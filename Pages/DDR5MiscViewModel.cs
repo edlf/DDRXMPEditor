@@ -1,4 +1,4 @@
-﻿using DDR4XMPEditor.DDR5SPD;
+﻿using DDR5XMPEditor.DDR5SPD;
 using Microsoft.Win32;
 using Stylet;
 using System;
@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace DDR4XMPEditor.Pages
+namespace DDR5XMPEditor.Pages
 {
     public class DDR5MiscViewModel : Screen
     {
@@ -25,8 +25,7 @@ namespace DDR4XMPEditor.Pages
         public DDR5_SPD SPD { get; set; }
 
         public ObservableCollection<Tuple<string, DDR5_SPD.FormFactorEnum>> FormFactorCollection { get; set; }
-        public ObservableCollection<Tuple<string, DDR5_SPD.Densities>> DensityCollection { get; set; }
-
+        public ObservableCollection<Tuple<string, DDR5_SPD.DensitiesEnum>> DensityCollection { get; set; }
         public ObservableCollection<int> BankGroupsCollection { get; set; }
         public ObservableCollection<int> BanksPerBankGroupCollection { get; set; }
         public ObservableCollection<int> ColumnAddressesCollection { get; set; }
@@ -41,9 +40,9 @@ namespace DDR4XMPEditor.Pages
         }
 
         // Density
-        public DDR5_SPD.Densities SelectedDensity
+        public DDR5_SPD.DensitiesEnum SelectedDensity
         {
-            get => SPD != null && SPD.Density.HasValue ? SPD.Density.Value : DDR5_SPD.Densities._0Gb;
+            get => SPD != null && SPD.Density.HasValue ? SPD.Density.Value : DDR5_SPD.DensitiesEnum._0Gb;
             set => SPD.Density = value;
         }
         public int SelectedBankGroups
@@ -86,7 +85,8 @@ namespace DDR4XMPEditor.Pages
             };
         }
 
-        public void exportXMPProfile() {
+        public void exportXMPProfile()
+        {
             SPD.UpdateCrc();
 
             byte[] bytes;
@@ -274,7 +274,8 @@ namespace DDR4XMPEditor.Pages
 
         private bool CanImport()
         {
-            if (!(importExportProfile >= 1 && importExportProfile <= 5)){
+            if (!(importExportProfile >= 1 && importExportProfile <= 5))
+            {
                 return false;
             }
 
@@ -329,17 +330,17 @@ namespace DDR4XMPEditor.Pages
                 Tuple.Create("Reserved", DDR5_SPD.FormFactorEnum.Reserved_15)
             };
 
-            DensityCollection = new ObservableCollection<Tuple<string, DDR5_SPD.Densities>>
+            DensityCollection = new ObservableCollection<Tuple<string, DDR5_SPD.DensitiesEnum>>
             {
-                Tuple.Create("No memory", DDR5_SPD.Densities._0Gb),
-                Tuple.Create("4Gb",   DDR5_SPD.Densities._4Gb),
-                Tuple.Create("8Gb",   DDR5_SPD.Densities._8Gb),
-                Tuple.Create("12Gb",  DDR5_SPD.Densities._12Gb),
-                Tuple.Create("16Gb",  DDR5_SPD.Densities._16Gb),
-                Tuple.Create("24Gb",  DDR5_SPD.Densities._24Gb),
-                Tuple.Create("32Gb",  DDR5_SPD.Densities._32Gb),
-                Tuple.Create("48Gb",  DDR5_SPD.Densities._48Gb),
-                Tuple.Create("64Gb",  DDR5_SPD.Densities._64Gb)
+                Tuple.Create("No memory", DDR5_SPD.DensitiesEnum._0Gb),
+                Tuple.Create("4Gb",   DDR5_SPD.DensitiesEnum._4Gb),
+                Tuple.Create("8Gb",   DDR5_SPD.DensitiesEnum._8Gb),
+                Tuple.Create("12Gb",  DDR5_SPD.DensitiesEnum._12Gb),
+                Tuple.Create("16Gb",  DDR5_SPD.DensitiesEnum._16Gb),
+                Tuple.Create("24Gb",  DDR5_SPD.DensitiesEnum._24Gb),
+                Tuple.Create("32Gb",  DDR5_SPD.DensitiesEnum._32Gb),
+                Tuple.Create("48Gb",  DDR5_SPD.DensitiesEnum._48Gb),
+                Tuple.Create("64Gb",  DDR5_SPD.DensitiesEnum._64Gb)
             };
 
             BankGroupsCollection = new ObservableCollection<int> { 1, 2, 4, 8 };

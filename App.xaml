@@ -1,7 +1,7 @@
-﻿<Application x:Class="DDR4XMPEditor.App"
+﻿<Application x:Class="DDR5XMPEditor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:DDR4XMPEditor"
+             xmlns:local="clr-namespace:DDR5XMPEditor"
              xmlns:s="https://github.com/canton7/Stylet">
     <Application.Resources>
         <s:ApplicationLoader>

@@ -1,28 +1,27 @@
 ﻿using DDR5XMPEditor.DDR5SPD;
 using Stylet;
 using System;
-using System.ComponentModel;
-using System.Linq;
 
 namespace DDR5XMPEditor.Pages
 {
-    public class DDR5SPDEditorViewModel : Screen
+    public class EXPOEditorViewModel : Screen
     {
-        public DDR5_SPD JedecProfile { get; set; }
-
+        public EXPO EXPOProfile { get; set; }
+        public DDR5_SPD SPD { get; set; }
+        public bool IsEnabled { get; set; }
+        public int ProfileNumber { get; set; }
         public double? Frequency
         {
             get
             {
-                if (JedecProfile == null)
+                if (EXPOProfile == null)
                 {
                     return null;
                 }
 
-                return Math.Round(1.0 / ((double)JedecProfile.MinCycleTime / 1000000));
+                return Math.Round(1.0 / ((double)EXPOProfile.MinCycleTime / 1000000));
             }
         }
-
         public double? MegaTransfers
         {
             get
@@ -35,9 +34,9 @@ namespace DDR5XMPEditor.Pages
                 return Frequency * 2;
             }
         }
-
-        public DDR5SPDEditorViewModel()
+        public EXPOEditorViewModel(int profileNumber)
         {
+            ProfileNumber = profileNumber;
         }
     }
 }

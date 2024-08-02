@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DDR4XMPEditor
+namespace DDR5XMPEditor
 {
     /// <summary>
     /// Interaction logic for App.xaml

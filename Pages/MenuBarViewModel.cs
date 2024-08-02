@@ -1,9 +1,9 @@
-﻿using DDR4XMPEditor.Events;
+﻿using DDR5XMPEditor.Events;
 using Microsoft.Win32;
 using Stylet;
 using System.IO;
 
-namespace DDR4XMPEditor.Pages
+namespace DDR5XMPEditor.Pages
 {
     public class MenuBarViewModel : Screen
     {

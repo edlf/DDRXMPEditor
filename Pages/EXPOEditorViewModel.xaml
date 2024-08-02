@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="DDR5XMPEditor.Pages.EXPOEditorView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:DDR5XMPEditor.Pages"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      mc:Ignorable="d"
+      IsEnabled="{Binding IsEnabled}">
+
+    <StackPanel>
+        <GroupBox Header="Frequency">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Min Cycle Time:"/>
+                <xctk:IntegerUpDown Grid.Row="0"  Grid.Column="1" Value="{Binding EXPOProfile.MinCycleTime}" Minimum="1" Maximum="65535" FormatString="N0"/>
+                <TextBox Grid.Row="0" Grid.Column="2" IsReadOnly="True" Text="{Binding Frequency, StringFormat={}{0:F3}Mhz, Mode=OneWay}"/>
+                <TextBox Grid.Row="0" Grid.Column="3" IsReadOnly="True" Text="{Binding MegaTransfers, StringFormat={}{0:F3}MT/s, Mode=OneWay}"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Voltages">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="VDD:"/>
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="1" Minimum="110" Maximum="240" Value="{Binding EXPOProfile.VDD}"/>
+                <Label Grid.Row="0" Grid.Column="2" Content="VDDQ:"/>
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="3" Minimum="110" Maximum="240" Value="{Binding EXPOProfile.VDDQ}"/>
+                <Label Grid.Row="0" Grid.Column="4" Content="VPP:"/>
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="5" Minimum="110" Maximum="240" Value="{Binding EXPOProfile.VPP}"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Timings">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.4*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="0.8*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Name" FontWeight="Bold"/>
+                <Label Grid.Row="0" Grid.Column="1" Content="Value (ps)         " FontWeight="Bold"/>
+                <Label Grid.Row="0" Grid.Column="2" Content="Ticks" FontWeight="Bold"/>
+                <Label Grid.Row="0" Grid.Column="3" Content="" FontWeight="Bold"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Content="tAA:" ToolTip="Read Command to First Data" FontStyle="Normal"/>
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" Value="{Binding EXPOProfile.tAA}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="1" Grid.Column="2" Content="{Binding EXPOProfile.tAATicks, Mode=OneWay}"/>
+
+                <Label Grid.Row="2" Grid.Column="0" Content="tRCD:" ToolTip="Activate to Read or Write Command Delay"/>
+                <xctk:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding EXPOProfile.tRCD}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="2" Grid.Column="2" Content="{Binding EXPOProfile.tRCDTicks, Mode=OneWay}"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Content="tRP:" ToolTip="Row Precharge Time"/>
+                <xctk:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding EXPOProfile.tRP}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="3" Grid.Column="2" Content="{Binding EXPOProfile.tRPTicks, Mode=OneWay}"/>
+
+                <Label Grid.Row="4" Grid.Column="0" Content="tRAS:" ToolTip="Activate to Precharge Command Period"/>
+                <xctk:IntegerUpDown Grid.Row="4" Grid.Column="1" Value="{Binding EXPOProfile.tRAS}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="4" Grid.Column="2" Content="{Binding EXPOProfile.tRASTicks, Mode=OneWay}"/>
+
+                <Label Grid.Row="5" Grid.Column="0" Content="tRC:" ToolTip="Activate to Activate or Refresh Command Period"/>
+                <xctk:IntegerUpDown Grid.Row="5" Grid.Column="1" Value="{Binding EXPOProfile.tRC}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="5" Grid.Column="2" Content="{Binding EXPOProfile.tRCTicks, Mode=OneWay}"/>
+
+                <Label Grid.Row="6" Grid.Column="0" Content="tWR:" ToolTip="Write Recovery Time"/>
+                <xctk:IntegerUpDown Grid.Row="6" Grid.Column="1" Value="{Binding EXPOProfile.tWR}" Minimum="1" Maximum="65535" FormatString="N0" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="6" Grid.Column="2" Content="{Binding EXPOProfile.tWRTicks, Mode=OneWay}"/>
+
+                <Label Grid.Row="7" Grid.Column="0" Content="tRFC1:" ToolTip="Normal Refresh Recovery Time"/>
+                <xctk:IntegerUpDown Grid.Row="7" Grid.Column="1" Value="{Binding EXPOProfile.tRFC1}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="7" Grid.Column="2" Content="{Binding EXPOProfile.tRFC1Ticks, Mode=OneWay}"/>
+
+                <Label Grid.Row="8" Grid.Column="0" Content="tRFC2:" ToolTip="Fine Granularity Refresh Recovery Time"/>
+                <xctk:IntegerUpDown Grid.Row="8" Grid.Column="1" Value="{Binding EXPOProfile.tRFC2}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="8" Grid.Column="2" Content="{Binding EXPOProfile.tRFC2Ticks, Mode=OneWay}"/>
+
+                <Label Grid.Row="9" Grid.Column="0" Content="tRFC:" ToolTip="Same Bank Refresh Recovery Time"/>
+                <xctk:IntegerUpDown Grid.Row="9" Grid.Column="1" Value="{Binding EXPOProfile.tRFC}" Minimum="1" Maximum="65535" FontFamily="Consolas" TextAlignment="Right"/>
+                <Label Grid.Row="9" Grid.Column="2" Content="{Binding EXPOProfile.tRFCTicks, Mode=OneWay}"/>
+                <Label Grid.Row="1" Grid.Column="7" Content="{Binding EXPOProfile.tRRD_LTicks, Mode=OneWay}"/>
+                <Label Grid.Row="2" Grid.Column="7" Content="{Binding EXPOProfile.tCCD_LTicks, Mode=OneWay}"/>
+                <Label Grid.Row="3" Grid.Column="7" Content="{Binding EXPOProfile.tCCD_L_WRTicks, Mode=OneWay}"/>
+                <Label Grid.Row="4" Grid.Column="7" Content="{Binding EXPOProfile.tCCD_L_WR2Ticks, Mode=OneWay}"/>
+                <Label Grid.Row="5" Grid.Column="7" Content="{Binding EXPOProfile.tFAWTicks, Mode=OneWay}"/>
+                <Label Grid.Row="6" Grid.Column="7" Content="{Binding EXPOProfile.tCCD_L_WTRTicks, Mode=OneWay}"/>
+                <Label Grid.Row="7" Grid.Column="7" Content="{Binding EXPOProfile.tCCD_S_WTRTicks, Mode=OneWay}"/>
+                <Label Grid.Row="8" Grid.Column="7" Content="{Binding EXPOProfile.tRTPTicks, Mode=OneWay}"/>
+            </Grid>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

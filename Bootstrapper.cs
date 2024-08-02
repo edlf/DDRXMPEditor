@@ -1,9 +1,9 @@
 ﻿using System;
 using Stylet;
 using StyletIoC;
-using DDR4XMPEditor.Pages;
+using DDR5XMPEditor.Pages;
 
-namespace DDR4XMPEditor
+namespace DDR5XMPEditor
 {
     public class Bootstrapper : Bootstrapper<ShellViewModel>
     {
